@@ -3,8 +3,7 @@ package com.djuwidja.horsegame.pathfinder.math;
 import java.awt.geom.Point2D;
 
 import org.junit.jupiter.api.Test;
-
-import org.junit.Assert;;
+import org.junit.Assert;
 
 public class Parabola2DTests {
 	@Test

@@ -42,3 +42,4 @@ out/
 .settings/
 .metadata/
 .config
+/lombok.config

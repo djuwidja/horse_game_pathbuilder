@@ -2,7 +2,6 @@ package com.djuwidja.horsegame.pathfinder.math;
 
 import lombok.Getter;
 import java.awt.geom.Point2D;
-import com.djuwidja.horsegame.pathfinder.math.Arithmetic;
 /**
  * Parabola class to model a path through the curved tracks within a race track. 
  * Note that the equation of this parabola is inverted (x = ay^2 + by + c) to be more fitting with its application.

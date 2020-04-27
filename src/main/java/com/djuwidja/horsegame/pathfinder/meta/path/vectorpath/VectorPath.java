@@ -2,12 +2,9 @@ package com.djuwidja.horsegame.pathfinder.meta.path.vectorpath;
 
 import java.awt.geom.Point2D;
 
-import com.djuwidja.horsegame.pathfinder.math.Vector2D;
-import com.djuwidja.horsegame.pathfinder.meta.curve.TrackSectionCurve;
-
 import lombok.Getter;
 
-public class VectorPath implements TrackSectionCurve{
+public class VectorPath {
 	@Getter private VectorPathSect[] vectorList;
 	
 	public VectorPath(Point2D[] pointList) throws ConstructorParamException {
@@ -23,11 +20,5 @@ public class VectorPath implements TrackSectionCurve{
 			
 			vectorList[i - 1] = new VectorPathSect(startPt, endPt);
 		}
-	}
-
-	@Override
-	public Vector2D getTangentVector(Point2D pt) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

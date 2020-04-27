@@ -1,4 +1,4 @@
-package com.djuwidja.horsegame.pathfinder.model.meta;
+package com.djuwidja.horsegame.pathfinder.meta;
 
 public enum Direction {
 	NORTH,

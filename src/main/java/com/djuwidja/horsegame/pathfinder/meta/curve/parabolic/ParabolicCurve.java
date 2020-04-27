@@ -1,4 +1,4 @@
-package com.djuwidja.horsegame.pathfinder.model.meta;
+package com.djuwidja.horsegame.pathfinder.meta.curve.parabolic;
 
 import lombok.Getter;
 
@@ -6,6 +6,8 @@ import java.awt.geom.Point2D;
 
 import com.djuwidja.horsegame.pathfinder.math.Parabola2D;
 import com.djuwidja.horsegame.pathfinder.math.Vector2D;
+import com.djuwidja.horsegame.pathfinder.meta.Direction;
+import com.djuwidja.horsegame.pathfinder.meta.curve.TrackSectionCurve;
 
 public class ParabolicCurve implements TrackSectionCurve {
 	@Getter private int sectionType;

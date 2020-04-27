@@ -1,4 +1,4 @@
-package com.djuwidja.horsegame.pathfinder.model.meta;
+package com.djuwidja.horsegame.pathfinder.meta.curve.vectorpath;
 
 import org.junit.jupiter.api.Test;
 

@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 import org.junit.jupiter.api.Test;
 import org.junit.Assert;
 
-public class Parabola2DTests {
+public class Parabola2DTest {
 	@Test
 	public void testY2M1() {
 		// test x = y^2 - 1;

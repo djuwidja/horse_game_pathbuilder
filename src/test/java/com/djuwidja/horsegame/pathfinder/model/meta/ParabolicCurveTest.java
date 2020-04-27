@@ -1,11 +1,11 @@
 package com.djuwidja.horsegame.pathfinder.model.meta;
 
 import org.junit.jupiter.api.Test;
+import org.junit.Assert;
 
 import java.awt.geom.Point2D;
 import java.util.Random;
 
-import org.junit.Assert;
 import com.djuwidja.horsegame.pathfinder.math.Vector2D;
 
 public class ParabolicCurveTest {

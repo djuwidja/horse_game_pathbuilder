@@ -8,7 +8,7 @@ import java.util.Random;
 import org.junit.Assert;
 import com.djuwidja.horsegame.pathfinder.math.Vector2D;
 
-public class TrackSectionCurveTest {
+public class ParabolicCurveTest {
 	@Test
 	public void testinitializeSouth() {
 		Point2D startPt = new Point2D.Double(0d, 1d);
@@ -16,7 +16,7 @@ public class TrackSectionCurveTest {
 		Point2D vertex = new Point2D.Double(-1d, 0d);
 		Point2D control = new Point2D.Double(0d, 0d);
 		
-		TrackSectionCurve section = new TrackSectionCurve(startPt, endPt, vertex, control);
+		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex, control);
 		Assert.assertEquals(Direction.SOUTH, section.getDirection());
 	}
 	
@@ -27,7 +27,7 @@ public class TrackSectionCurveTest {
 		Point2D vertex = new Point2D.Double(-1d, 0d);
 		Point2D control = new Point2D.Double(0d, 0d);
 		
-		TrackSectionCurve section = new TrackSectionCurve(startPt, endPt, vertex, control);
+		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex, control);
 		Assert.assertEquals(Direction.NORTH, section.getDirection());
 	}
 	
@@ -40,7 +40,7 @@ public class TrackSectionCurveTest {
 		Point2D vertex = new Point2D.Double(-1d, 0d);
 		Point2D control = new Point2D.Double(0d, 0d);
 		
-		TrackSectionCurve section = new TrackSectionCurve(startPt, endPt, vertex, control);
+		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex, control);
 		Random rand = new Random();
 		for (int i = 0; i < sampleSize; i++) {
 			Point2D pt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
@@ -59,7 +59,7 @@ public class TrackSectionCurveTest {
 		Point2D vertex = new Point2D.Double(-1d, 0d);
 		Point2D control = new Point2D.Double(0d, 0d);
 		
-		TrackSectionCurve section = new TrackSectionCurve(startPt, endPt, vertex, control);
+		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex, control);
 		Random rand = new Random();
 		for (int i = 0; i < sampleSize; i++) {
 			Point2D pt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());

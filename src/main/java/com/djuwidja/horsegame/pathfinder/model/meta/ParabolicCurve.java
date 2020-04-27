@@ -7,12 +7,12 @@ import java.awt.geom.Point2D;
 import com.djuwidja.horsegame.pathfinder.math.Parabola2D;
 import com.djuwidja.horsegame.pathfinder.math.Vector2D;
 
-public class TrackSectionCurve {
+public class ParabolicCurve implements TrackSectionCurve {
 	@Getter private int sectionType;
 	@Getter private Direction direction;
 	private Parabola2D model;	
 	
-	public TrackSectionCurve(Point2D startPt, Point2D endPt, Point2D vertex, Point2D control) {
+	public ParabolicCurve(Point2D startPt, Point2D endPt, Point2D vertex, Point2D control) {
 		model = new Parabola2D(startPt, endPt, vertex, control);
 		if (startPt.getY() - endPt.getY() > 0d) {
 			direction = Direction.SOUTH;

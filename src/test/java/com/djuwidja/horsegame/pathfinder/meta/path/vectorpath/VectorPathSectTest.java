@@ -1,15 +1,14 @@
-package com.djuwidja.horsegame.pathfinder.meta.curve.vectorpath;
+package com.djuwidja.horsegame.pathfinder.meta.path.vectorpath;
 
 import org.junit.jupiter.api.Test;
+import org.junit.Assert;
 
 import com.djuwidja.horsegame.pathfinder.math.Vector2D;
 
 import java.awt.geom.Point2D;
 import java.util.Random;
 
-import org.junit.Assert;
-
-public class VectorPathSectionTest {
+public class VectorPathSectTest {
 	@Test
 	public void testInitialization() {
 		int sampleSize = 100;
@@ -22,7 +21,7 @@ public class VectorPathSectionTest {
 			
 			Vector2D vec = new Vector2D(startPt, endPt);
 			
-			VectorPathSection section = new VectorPathSection(startPt, endPt);
+			VectorPathSect section = new VectorPathSect(startPt, endPt);
 			Assert.assertEquals(startPt, section.getStartPt());
 			Assert.assertEquals(endPt, section.getEndPt());
 			Assert.assertEquals(vec.getX(), section.getVector().getX(), 0.00000001d);

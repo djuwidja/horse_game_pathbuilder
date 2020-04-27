@@ -1,5 +1,7 @@
 package com.djuwidja.horsegame.pathfinder.math;
 
+import java.awt.geom.Point2D;
+
 import lombok.Getter;
 
 public class Vector2D {
@@ -20,6 +22,12 @@ public class Vector2D {
 	public Vector2D(double x, double y) {
 		this.x = x;
 		this.y = y;
+		evaluate();
+	}
+	
+	public Vector2D(Point2D startPt, Point2D endPt) {
+		this.x = endPt.getX() - startPt.getX();
+		this.y = endPt.getY() - startPt.getY();
 		evaluate();
 	}
 	

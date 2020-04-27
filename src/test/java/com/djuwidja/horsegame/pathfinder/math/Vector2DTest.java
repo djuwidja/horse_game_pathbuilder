@@ -2,6 +2,8 @@ package com.djuwidja.horsegame.pathfinder.math;
 
 import org.junit.jupiter.api.Test;
 import org.junit.Assert;
+
+import java.awt.geom.Point2D;
 import java.util.Random;
 
 public class Vector2DTest {
@@ -25,6 +27,22 @@ public class Vector2DTest {
 		
 		Assert.assertEquals(vecX, vec1.getX(), 0.0000001d);
 		Assert.assertEquals(vecY, vec1.getY(), 0.0000001d);
+	}
+	
+	@Test
+	public void testInitializationWithPoints() {
+		Random rand = new Random();
+		Point2D startPt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
+		Point2D endPt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
+		
+		double vecX = endPt.getX() - startPt.getX();
+		double vecY = endPt.getY() - startPt.getY();
+		
+		Vector2D vec = new Vector2D(startPt, endPt);
+		System.out.println(vec);
+		
+		Assert.assertEquals(vecX, vec.getX(), 0.0000001d);
+		Assert.assertEquals(vecY, vec.getY(), 0.0000001d);	
 	}
 	
 	@Test

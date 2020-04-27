@@ -21,6 +21,7 @@ public class ParabolicCurve implements TrackSectionCurve {
 		}
 	}
 	
+	@Override
 	public Vector2D getTangentVector(Point2D pt) {
 		Point2D intersectPt = model.getInteractionCtrlPt(pt);
 		double slope = model.getTangentSlope(intersectPt.getY());

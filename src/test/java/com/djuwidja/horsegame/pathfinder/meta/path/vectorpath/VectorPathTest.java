@@ -2,6 +2,7 @@ package com.djuwidja.horsegame.pathfinder.meta.path.vectorpath;
 
 import org.junit.jupiter.api.Test;
 
+import com.djuwidja.horsegame.pathfinder.math.Arithmetic;
 import com.djuwidja.horsegame.pathfinder.math.Vector2D;
 import com.djuwidja.testbase.ExceptionFacilitator;
 import com.djuwidja.testbase.TestBase;
@@ -45,8 +46,10 @@ public class VectorPathTest extends TestBase {
 			double vecX = endPt.getX() - startPt.getX();
 			double vecY = endPt.getY() - startPt.getY();
 			
-			Assert.assertEquals(vecX, sectVec.getX(), 0.00000001d);
-			Assert.assertEquals(vecY, sectVec.getY(), 0.00000001d);		
+			double mag = Math.sqrt(Arithmetic.square(vecX) + Arithmetic.square(vecY));
+			
+			Assert.assertEquals(vecX / mag, sectVec.getX(), 0.00000001d);
+			Assert.assertEquals(vecY / mag, sectVec.getY(), 0.00000001d);		
 		}	
 	}
 	

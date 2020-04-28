@@ -20,6 +20,7 @@ public class VectorPathSectTest {
 			Point2D endPt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
 			
 			Vector2D vec = new Vector2D(startPt, endPt);
+			vec.normalize();
 			
 			VectorPathSect section = new VectorPathSect(startPt, endPt);
 			Assert.assertEquals(startPt, section.getStartPt());

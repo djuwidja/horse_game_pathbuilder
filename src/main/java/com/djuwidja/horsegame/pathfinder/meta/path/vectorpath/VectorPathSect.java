@@ -17,6 +17,7 @@ public class VectorPathSect {
 		this.startPt = startPt;
 		this.endPt = endPt;
 		this.vector = new Vector2D(startPt, endPt);
+		this.vector.normalize();
 		this.line = new Line2D(startPt, endPt);
 	}
 }

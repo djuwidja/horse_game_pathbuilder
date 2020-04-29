@@ -229,7 +229,59 @@ public class Line2DTest extends TestBase {
 				line1.getIntersection(line2);
 			}
 		}, Line2DException.class);	
+	}
+	
+	@Test
+	public void testTimeOfImpactWithLine() throws Line2DException {
+		Line2D line = new Line2D(new Point2D.Double(0d, 1d), new Point2D.Double(1d, 2d));
 		
+		//fail case - no time of impact
+		this.testExceptionThrown(new ExceptionFacilitator<Line2DException>() {
+			@Override
+			public void testForException() throws Line2DException {
+				line.getTimeOfImpact(new Point2D.Double(0d,0d), new Vector2D(1d, 0d));
+			}
+			
+		}, Line2DException.class);
 		
+		// success case
+		Double time = line.getTimeOfImpact(new Point2D.Double(0d, 0d), new Vector2D(0d, 1d));
+		Assert.assertEquals(1d, time, 0.00000001d);
+	}
+	
+	@Test
+	public void testTimeOfImpactWithXPlane() throws Line2DException {
+		Line2D line = new Line2D(new Point2D.Double(5d, 1d), new Point2D.Double(5d, 2d));
+		
+		//fail case - no time of impact
+		this.testExceptionThrown(new ExceptionFacilitator<Line2DException>() {
+			@Override
+			public void testForException() throws Line2DException {
+				line.getTimeOfImpact(new Point2D.Double(0d,0d), new Vector2D(0d, 1d));
+			}
+			
+		}, Line2DException.class);
+		
+		// success case
+		Double time = line.getTimeOfImpact(new Point2D.Double(0d, 0d), new Vector2D(1d, 0d));
+		Assert.assertEquals(5d, time, 0.00000001d);
+	}
+	
+	@Test
+	public void testTimeOfImpactWithYPlane() throws Line2DException {
+		Line2D line = new Line2D(new Point2D.Double(1d, 5d), new Point2D.Double(2d, 5d));
+		
+		//fail case - no time of impact
+		this.testExceptionThrown(new ExceptionFacilitator<Line2DException>() {
+			@Override
+			public void testForException() throws Line2DException {
+				line.getTimeOfImpact(new Point2D.Double(0d,0d), new Vector2D(5d, 0d));
+			}
+			
+		}, Line2DException.class);
+		
+		// success case
+		Double time = line.getTimeOfImpact(new Point2D.Double(0d, 0d), new Vector2D(0d, 5d));
+		Assert.assertEquals(1d, time, 0.00000001d);
 	}
 }

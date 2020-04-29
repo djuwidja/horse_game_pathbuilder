@@ -4,12 +4,11 @@ import java.awt.geom.Point2D;
 
 import lombok.Getter;
 
-public class Line2D {	
+public class Line2D {
 	@Getter private double m;
 	@Getter private double c;
-	
 	@Getter private Line2DType type;
-	
+		
 	public Line2D(Point2D pt1, Point2D pt2) {
 		double xDiff = (pt2.getX() - pt1.getX());
 		double yDiff = (pt2.getY() - pt1.getY());
@@ -52,48 +51,67 @@ public class Line2D {
 	}
 	
 	public Point2D getIntersection(Line2D line) throws Line2DException {
-		Line2DType thisType = this.type;
-		Line2DType lineType = line.getType();		
+		return Line2D.getIntersection(this, line);
+	}
+	
+	public Double getTimeOfImpact(Point2D pt, Vector2D vec) throws Line2DException {
+		return Line2D.getTimeOfImpact(pt, vec, this);
+	}
+	
+	@Override
+	public String toString() {
+		switch (this.type) {
+		case X_PLANE:
+			return String.format("Line[x=%f]", this.c);
+		case Y_PLANE:
+			return String.format("Line[y=%f]", this.c);
+		default:
+			return String.format("Line[y=%fm + %f]", this.m, this.c);
+		}
+	}
+	
+	public static final Point2D getIntersection(Line2D lineA, Line2D lineB) throws Line2DException {
+		Line2DType lineAType = lineA.getType();
+		Line2DType lineBType = lineB.getType();
 		
-		if (thisType == lineType) {
-			switch (thisType) {
+		if (lineAType == lineBType) {
+			switch (lineAType) {
 			case X_PLANE:
 				throw Line2DException.createLinesAreParallelException();
 			case Y_PLANE:
 				throw Line2DException.createLinesAreParallelException();
 			default:
-				return getLineIntersection(this, line);
+				return getLineIntersection(lineA, lineB);
 			}
-		} 
+		}
 		else {
 			// Plane to plane intersections
-			if (thisType == Line2DType.X_PLANE && lineType == Line2DType.Y_PLANE) {
-				return getInsectionWithXYPlane(this, line);
+			if (lineAType == Line2DType.X_PLANE && lineBType == Line2DType.Y_PLANE) {
+				return getInsectionWithXYPlane(lineA, lineB);
 			} 
-			else if (thisType == Line2DType.Y_PLANE && lineType == Line2DType.X_PLANE) {
-				return getInsectionWithXYPlane(line, this);
+			else if (lineAType == Line2DType.Y_PLANE && lineBType == Line2DType.X_PLANE) {
+				return getInsectionWithXYPlane(lineB, lineA);
 			}
 			// line to X plane intersections
-			else if (thisType == Line2DType.LINE && lineType == Line2DType.X_PLANE) {
-				return getIntersectionWithXPlane(this, line);
+			else if (lineAType == Line2DType.LINE && lineBType == Line2DType.X_PLANE) {
+				return getIntersectionWithXPlane(lineA, lineB);
 			}
-			else if (thisType == Line2DType.X_PLANE && lineType == Line2DType.LINE) {
-				return getIntersectionWithXPlane(line, this);
+			else if (lineAType == Line2DType.X_PLANE && lineBType == Line2DType.LINE) {
+				return getIntersectionWithXPlane(lineB, lineA);
 			}
 			// line to Y plane intersections
-			else if (thisType == Line2DType.LINE && lineType == Line2DType.Y_PLANE) {
-				return getIntersectionWithYPlane(this, line);
+			else if (lineAType == Line2DType.LINE && lineBType == Line2DType.Y_PLANE) {
+				return getIntersectionWithYPlane(lineA, lineB);
 			}
 			else {
-				return getIntersectionWithYPlane(line, this);
+				return getIntersectionWithYPlane(lineB, lineA);
 			}
-			
 		}
 	}
 	
 	private static final Point2D getLineIntersection(Line2D lineA, Line2D lineB) throws Line2DException {
 		double mDiff = lineB.m - lineA.m;
-		if (mDiff == 0d) {
+		if (Math.abs(mDiff) < 0.000000000000001d) {
 			throw Line2DException.createLinesAreParallelException();
 		}
 		
@@ -133,6 +151,49 @@ public class Line2D {
 		}
 		
 		return new Point2D.Double(xPlane.getC(), yPlane.getC());
+	}
+	
+	public static final double getTimeOfImpact(Point2D pt, Vector2D vec, Line2D line) throws Line2DException {
+		switch (line.getType()) {
+		case X_PLANE:
+			return getTimeOfImpactWithXPlane(pt, vec, line);
+		case Y_PLANE:
+			return getTimeOfImpactWithYPlane(pt, vec, line);
+		default:
+			return getTimeOfImpactWithLine(pt, vec, line);
+		}
+	}
+	
+	private static final double getTimeOfImpactWithLine(Point2D pt, Vector2D vec, Line2D line) throws Line2DException {
+		double t;
+		try {
+			t = (line.getM() * pt.getX() - pt.getY() + line.getC()) / (vec.getY() - line.m * vec.getX());
+		}
+		catch (final Exception e) {
+			throw Line2DException.createCannotResolveTimeOfImpactException();
+		}
+		
+		if (t < 0) {
+			throw Line2DException.createCannotResolveTimeOfImpactException();
+		}
+		
+		return t;
+	}
+	
+	private static final double getTimeOfImpactWithXPlane(Point2D pt, Vector2D vec, Line2D line) throws Line2DException {
+		if (vec.getX() == 0d) {
+			throw Line2DException.createCannotResolveTimeOfImpactException();
+		}
+		
+		return line.getC() / vec.getX();
+	}
+	
+	private static final double getTimeOfImpactWithYPlane(Point2D pt, Vector2D vec, Line2D line) throws Line2DException {
+		if (vec.getY() == 0d) {
+			throw Line2DException.createCannotResolveTimeOfImpactException();
+		}
+		
+		return line.getC() / vec.getY();
 	}
 	
 }

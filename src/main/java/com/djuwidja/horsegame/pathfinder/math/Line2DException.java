@@ -10,6 +10,7 @@ public class Line2DException extends Exception {
 	private static final String LINES_ARE_PARALLEL_TO_EACH_OTHER = "Lines are parallel to each other.";
 	private static final String LINE_IS_NOT_X_PLANE = "Line is not x plane.";
 	private static final String LINE_IS_NOT_Y_PLANE = "Line is not y plane.";
+	private static final String CANNOT_RESOLVE_TIME_OF_IMPACT = "Cannot resolve time of impact";
 	
 	public static final Line2DException createYCanontBeDeterminedException() {
 		return new Line2DException(Y_CANNOT_BE_DETERMINED);
@@ -29,6 +30,10 @@ public class Line2DException extends Exception {
 	
 	public static final Line2DException createLineIsNotYPlaneException() {
 		return new Line2DException(LINE_IS_NOT_Y_PLANE);
+	}
+	
+	public static final Line2DException createCannotResolveTimeOfImpactException() {
+		return new Line2DException(CANNOT_RESOLVE_TIME_OF_IMPACT);
 	}
 	
 	protected Line2DException(String errorMsg) {

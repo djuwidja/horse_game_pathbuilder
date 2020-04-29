@@ -14,8 +14,8 @@ public class ParabolicCurve implements TrackSectionCurve {
 	@Getter private Direction direction;
 	private Parabola2D model;	
 	
-	public ParabolicCurve(Point2D startPt, Point2D endPt, Point2D vertex, Point2D control) {
-		model = new Parabola2D(startPt, endPt, vertex, control);
+	public ParabolicCurve(Point2D startPt, Point2D endPt, Point2D vertex) {
+		model = new Parabola2D(startPt, endPt, vertex);
 		if (startPt.getY() - endPt.getY() > 0d) {
 			direction = Direction.SOUTH;
 		} else {
@@ -24,8 +24,9 @@ public class ParabolicCurve implements TrackSectionCurve {
 	}
 	
 	@Override
-	public Vector2D getTangentVector(Point2D pt) {
-		Point2D intersectPt = model.getInteractionCtrlPt(pt);
+	public Vector2D getTangentVector(Point2D pt, Vector2D normal) {
+		double t = model.getTimeOfImpact(pt, normal);	
+		Point2D intersectPt = new Point2D.Double(pt.getX() + t * normal.getX(), pt.getY() + t * normal.getY());
 		double slope = model.getTangentSlope(intersectPt.getY());
 		// point is at vertex when slope == 0
 		if (slope == 0d) {
@@ -39,10 +40,10 @@ public class ParabolicCurve implements TrackSectionCurve {
 		Vector2D vec = new Vector2D(x2 - pt.getX(), y2 - pt.getY());
 		// determine the direction of vector base on the direction variable.
 		if (direction == Direction.NORTH && vec.getY() > 0d) {
-			vec.dot(-1d);
+			vec.scalar(-1d);
 		}
 		else if (direction == Direction.SOUTH && vec.getY() < 0d) {
-			vec.dot(-1d);
+			vec.scalar(-1d);
 		}
 		vec.normalize();		
 		return vec;

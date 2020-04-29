@@ -17,13 +17,11 @@ public class Parabola2D {
 	@Getter private Point2D pt1;
 	@Getter private Point2D pt2;
 	@Getter private Point2D vertex;
-	@Getter private Point2D control;
 	
-	public Parabola2D(Point2D pt1, Point2D pt2, Point2D vertex, Point2D control) {
+	public Parabola2D(Point2D pt1, Point2D pt2, Point2D vertex) {
 		this.pt1 = pt1;
 		this.pt2 = pt2;
 		this.vertex = vertex;
-		this.control = control;
 		
 		this.evaluate();
 	}
@@ -66,36 +64,23 @@ public class Parabola2D {
 		// x' = 2ay + b
 		return 2 * a * y + b;
 	}
-	/**
-	 * Get nearest intersection point between this parabola and a line formed between the given point and the control point.
-	 * @param pt point to form a line with the control point.
-	 * @return The nearest intersection point on this parabola.
-	 */
-	public Point2D getInteractionCtrlPt(Point2D pt) {
-		double md = pt.getY() - control.getY();
-		if (md == 0d) {
-			return vertex;
+	
+	public double getTimeOfImpact(Point2D pt, Vector2D vec) {
+		if (vec.getY() == 0d) {
+			return (this.a * Arithmetic.square(pt.getY()) + b * pt.getY() + c - pt.getX()) / vec.getX();
 		}
-		double m = (pt.getX() - control.getX()) / md;
-		double cl = control.getX() - m * control.getY();
 		
-		double bmMOn2a = (b - m) / (2 * a);
+		double omega = (2 * this.a * vec.getY() * pt.getY() + this.b * vec.getY() - vec.getX()) / (2 * a * Arithmetic.square(vec.getY()));
+		double theta = (pt.getX() - this.a * Arithmetic.square(pt.getY()) - this.b * pt.getY() - this.c) / (this.a * Arithmetic.square(vec.getY()));
+		double root = Math.sqrt(theta + Arithmetic.square(omega));
 		
-		double withinSqrt = Math.sqrt((cl - c) / a + Arithmetic.square(bmMOn2a));
-		
-		double yPos = -bmMOn2a + withinSqrt;
-		double xPos = getX(yPos);
-		double distFromPtPos = Arithmetic.square(pt.getX() - xPos) + Arithmetic.square(pt.getY() - yPos);
-				
-		double yNeg = -bmMOn2a - withinSqrt;
-		double xNeg = getX(yNeg);
-		double distFromPtNeg = Arithmetic.square(pt.getX() - xNeg) + Arithmetic.square(pt.getY() - yNeg);
-		
-		if (distFromPtNeg < distFromPtPos) {
-			return new Point2D.Double(xNeg, yNeg);
-		} else {
-			return new Point2D.Double(xPos, yPos);
-		}
+		double tPos = -omega + root;
+		double tNeg = -omega - root;		
+		return Math.min(tPos, tNeg);
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("x = %fy^2 + %fy + %f", this.a, this.b, this.c);
+	}
 }

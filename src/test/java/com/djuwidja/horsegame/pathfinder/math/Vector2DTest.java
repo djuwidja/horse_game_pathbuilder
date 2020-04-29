@@ -67,7 +67,7 @@ public class Vector2DTest {
 	}
 	
 	@Test
-	public void testDot() {
+	public void testScalar() {
 		Random rand = new Random();
 		double vecX = rand.nextDouble();
 		double vecY = rand.nextDouble();
@@ -77,10 +77,25 @@ public class Vector2DTest {
 		double resultY = vecY * multiply;
 		
 		Vector2D vec = new Vector2D(vecX, vecY);
-		vec.dot(multiply);
+		vec.scalar(multiply);
 		
 		Assert.assertEquals(resultX, vec.getX(), 0.0000001d);
 		Assert.assertEquals(resultY, vec.getY(), 0.0000001d);
+	}
+	
+	@Test
+	public void testDoct() {
+		Random rand = new Random();
+		double vec1X = rand.nextDouble();
+		double vec1Y = rand.nextDouble();
+		Vector2D vec1 = new Vector2D(vec1X, vec1Y);
+		
+		double vec2X = rand.nextDouble();
+		double vec2Y = rand.nextDouble();
+		Vector2D vec2 = new Vector2D(vec2X, vec2Y);
+		
+		double expected = vec1X * vec2X + vec1Y * vec2Y;
+		Assert.assertEquals(expected, vec1.dot(vec2), 0.0000001d);
 	}
 	
 	@Test
@@ -106,8 +121,25 @@ public class Vector2DTest {
 			Assert.assertEquals(1d, vec.getMagnitude(), 0.0000001d);
 			
 			double multiply = rand.nextDouble();
-			vec.dot(multiply);
+			vec.scalar(multiply);
 			Assert.assertEquals(multiply, vec.getMagnitude(), 0.0000001d);
+		}
+	}
+	
+	@Test
+	public void testNormal() {
+		Vector2D vec = new Vector2D(0d, 1d);
+		
+		Vector2D normal = vec.normal();
+		Assert.assertEquals(1d, normal.getX(), 0.0000001d);
+		Assert.assertEquals(0d, normal.getY(), 0.0000001d);
+		
+		Random rand = new Random();	
+		int sampleSize = 100;
+		for (int i = 0; i < sampleSize; i++) {
+			Vector2D testVec = new Vector2D(rand.nextDouble(), rand.nextDouble());		
+			Vector2D testNormal = testVec.normal();
+			Assert.assertEquals(0d, testVec.dot(testNormal), 0.0000001d);
 		}
 	}
 }

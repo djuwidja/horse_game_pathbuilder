@@ -2,10 +2,12 @@ package com.djuwidja.horsegame.pathfinder.meta;
 
 import lombok.Getter;
 
-public class RaceTrack {
-	@Getter private int trackType;
+public abstract class RaceTrack {
+	@Getter private TrackType trackType;
 	
-	public RaceTrack(int trackType) {
+	public RaceTrack(TrackType trackType) {
 		this.trackType = trackType;
 	}
+	
+	public abstract StartPoint getStartPoint(int laneId) throws InvalidLaneIdException;
 }

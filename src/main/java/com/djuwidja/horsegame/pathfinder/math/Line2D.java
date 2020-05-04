@@ -185,7 +185,7 @@ public class Line2D {
 			throw Line2DException.createCannotResolveTimeOfImpactException();
 		}
 		
-		return line.getC() / vec.getX();
+		return (line.getC() - pt.getX()) / vec.getX();
 	}
 	
 	private static final double getTimeOfImpactWithYPlane(Point2D pt, Vector2D vec, Line2D line) throws Line2DException {
@@ -193,7 +193,7 @@ public class Line2D {
 			throw Line2DException.createCannotResolveTimeOfImpactException();
 		}
 		
-		return line.getC() / vec.getY();
+		return (line.getC() - pt.getY()) / vec.getY();
 	}
 	
 }

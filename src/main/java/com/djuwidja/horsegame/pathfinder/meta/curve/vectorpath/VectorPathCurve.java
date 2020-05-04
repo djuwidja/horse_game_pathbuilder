@@ -23,11 +23,9 @@ public class VectorPathCurve implements TrackSectionCurve {
 		VectorPathSect closestSect = null;
 
 		VectorPathSect[] sectList = path.getVectorList();
-		System.out.println(String.format("pt=%s normal=%s", pt, normal));
 		for (int i = 0; i < sectList.length; i++) {
 			VectorPathSect sect = sectList[i];
 			try {
-				System.out.println(String.format("sect line %s", sect.getLine()));
 				double timeOfImpact = sect.getLine().getTimeOfImpact(pt, normal);
 				if (timeOfImpact >= 0d) {
 					Point2D intersectPoint = new Point2D.Double(pt.getX() + normal.getX() * timeOfImpact, pt.getY() + normal.getY() * timeOfImpact);

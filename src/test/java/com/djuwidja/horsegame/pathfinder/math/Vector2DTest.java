@@ -39,7 +39,6 @@ public class Vector2DTest {
 		double vecY = endPt.getY() - startPt.getY();
 		
 		Vector2D vec = new Vector2D(startPt, endPt);
-		System.out.println(vec);
 		
 		Assert.assertEquals(vecX, vec.getX(), 0.0000001d);
 		Assert.assertEquals(vecY, vec.getY(), 0.0000001d);	

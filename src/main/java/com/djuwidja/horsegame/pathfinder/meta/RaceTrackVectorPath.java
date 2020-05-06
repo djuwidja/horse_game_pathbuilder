@@ -12,8 +12,8 @@ public class RaceTrackVectorPath extends RaceTrack{
 	@Getter private VectorPathCurve path;
 	private Map<Integer, StartPoint> startPointMap;
 
-	public RaceTrackVectorPath(TrackType trackType, Point2D[] ptList, Map<Integer, StartPoint> startPointMap) throws ConstructorParamException {
-		super(trackType);
+	public RaceTrackVectorPath(TerrainType terrainType, Point2D[] ptList, Map<Integer, StartPoint> startPointMap) throws ConstructorParamException {
+		super(terrainType);
 		this.path = new VectorPathCurve(ptList);
 		if (startPointMap.size() == 0) {
 			throw new ConstructorParamException("Start Point Map is empty.");

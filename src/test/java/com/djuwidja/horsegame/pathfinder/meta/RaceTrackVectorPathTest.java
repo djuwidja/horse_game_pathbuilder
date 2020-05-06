@@ -20,7 +20,7 @@ public class RaceTrackVectorPathTest extends TestBase {
 		Random rand = new Random();
 		Point2D[] pointList = generatePointList(rand, 10);
 		Map<Integer, StartPoint> startPointMap = generateStartPointMap(rand, 5);
-		new RaceTrackVectorPath(TrackType.GRASS, pointList, startPointMap);
+		new RaceTrackVectorPath(TerrainType.GRASS, pointList, startPointMap);
 		
 		// fail case - no point list
 		this.testExceptionThrown(new ExceptionFacilitator<ConstructorParamException>() {
@@ -28,7 +28,7 @@ public class RaceTrackVectorPathTest extends TestBase {
 			@Override
 			public void testForException() throws ConstructorParamException {
 				Point2D[] failPointList = generatePointList(rand, 0);
-				new RaceTrackVectorPath(TrackType.GRASS, failPointList, startPointMap);			
+				new RaceTrackVectorPath(TerrainType.GRASS, failPointList, startPointMap);			
 			}
 		}, ConstructorParamException.class);
 		
@@ -38,7 +38,7 @@ public class RaceTrackVectorPathTest extends TestBase {
 			@Override
 			public void testForException() throws ConstructorParamException {
 				Map<Integer, StartPoint> failStartPointMap = generateStartPointMap(rand, 0);
-				new RaceTrackVectorPath(TrackType.GRASS, pointList, failStartPointMap);			
+				new RaceTrackVectorPath(TerrainType.GRASS, pointList, failStartPointMap);			
 			}
 		}, ConstructorParamException.class);
 	}
@@ -50,7 +50,7 @@ public class RaceTrackVectorPathTest extends TestBase {
 		
 		Point2D[] pointList = generatePointList(rand, 10);
 		Map<Integer, StartPoint> startPointMap = generateStartPointMap(rand, numPoint);
-		RaceTrackVectorPath track = new RaceTrackVectorPath(TrackType.GRASS, pointList, startPointMap);
+		RaceTrackVectorPath track = new RaceTrackVectorPath(TerrainType.GRASS, pointList, startPointMap);
 		
 		for (int i = 0; i < numPoint; i++) {
 			StartPoint expected = startPointMap.get(i);

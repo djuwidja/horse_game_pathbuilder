@@ -1,4 +1,4 @@
-package com.djuwidja.horsegame.pathfinder.repository;
+package com.djuwidja.horsegame.pathfinder;
 
 import javax.sql.DataSource;
 

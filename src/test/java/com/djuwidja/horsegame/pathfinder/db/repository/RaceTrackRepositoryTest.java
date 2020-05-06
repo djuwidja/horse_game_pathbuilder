@@ -1,4 +1,4 @@
-package com.djuwidja.horsegame.pathfinder.repository;
+package com.djuwidja.horsegame.pathfinder.db.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.djuwidja.horsegame.pathfinder.repository.dao.RaceTrackDao;
+import com.djuwidja.horsegame.pathfinder.TestConfig;
+import com.djuwidja.horsegame.pathfinder.db.repository.dao.RaceTrackDao;
 
 @SpringBootTest
 @ContextConfiguration(classes=TestConfig.class)

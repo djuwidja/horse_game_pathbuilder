@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.djuwidja.horsegame.pathfinder.repository.dao.RaceTrack;
+import com.djuwidja.horsegame.pathfinder.repository.dao.RaceTrackDao;
 
 @SpringBootTest
 @ContextConfiguration(classes=TestConfig.class)
@@ -25,7 +25,7 @@ public class RaceTrackRepositoryTest {
 	public void setup() {
 		raceTrackRepo.deleteAll();
 		
-		RaceTrack newTrack = new RaceTrack();
+		RaceTrackDao newTrack = new RaceTrackDao();
 		newTrack.setTrackType(88);
 		newTrack.setTerrainType(20);
 		raceTrackRepo.save(newTrack);
@@ -38,21 +38,21 @@ public class RaceTrackRepositoryTest {
 	
 	@Test
 	public void TestRetrieveData() {
-		List<RaceTrack> trackList = new ArrayList<>();
-		Iterable<RaceTrack> iterable = raceTrackRepo.findAll();
+		List<RaceTrackDao> trackList = new ArrayList<>();
+		Iterable<RaceTrackDao> iterable = raceTrackRepo.findAll();
 		iterable.forEach(trackList::add);
 		
 		Assert.assertEquals(1, trackList.size());
 		int trackId = trackList.get(0).getId();
 		
-		Optional<RaceTrack> qResult1 = raceTrackRepo.findById(trackId);
+		Optional<RaceTrackDao> qResult1 = raceTrackRepo.findById(trackId);
 		Assert.assertNotEquals(Optional.empty(), qResult1);
 		
-		RaceTrack track = qResult1.get();
+		RaceTrackDao track = qResult1.get();
 		Assert.assertEquals(88, track.getTrackType().intValue());
 		Assert.assertEquals(20, track.getTerrainType().intValue());
 		
-		Optional<RaceTrack> raceTrack2 = raceTrackRepo.findById(trackId + 1);
+		Optional<RaceTrackDao> raceTrack2 = raceTrackRepo.findById(trackId + 1);
 		Assert.assertEquals(Optional.empty(), raceTrack2);
 	}
 }

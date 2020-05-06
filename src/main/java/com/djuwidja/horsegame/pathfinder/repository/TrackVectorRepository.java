@@ -2,8 +2,8 @@ package com.djuwidja.horsegame.pathfinder.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.djuwidja.horsegame.pathfinder.repository.dao.TrackVector;
+import com.djuwidja.horsegame.pathfinder.repository.dao.TrackVectorDao;
 
-public interface TrackVectorRepository extends CrudRepository<TrackVector, Integer> {
-	public Iterable<TrackVector> findByTrackIdOrderBySeqAsc(Integer trackId);
+public interface TrackVectorRepository extends CrudRepository<TrackVectorDao, Integer> {
+	public Iterable<TrackVectorDao> findByTrackIdOrderBySeqAsc(Integer trackId);
 }

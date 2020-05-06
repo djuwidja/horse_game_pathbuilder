@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.djuwidja.horsegame.pathfinder.repository.dao.TrackVector;
+import com.djuwidja.horsegame.pathfinder.repository.dao.TrackVectorDao;
 
 @SpringBootTest
 @ContextConfiguration(classes=TestConfig.class)
@@ -24,7 +24,7 @@ public class TrackVectorRepositoryTest {
 	public void setup() {
 		trackVectorRepo.deleteAll();
 		
-		TrackVector trackVector1 = new TrackVector();
+		TrackVectorDao trackVector1 = new TrackVectorDao();
 		trackVector1.setTrackId(1);
 		trackVector1.setX(20.58d);
 		trackVector1.setZ(-147.82d);
@@ -32,7 +32,7 @@ public class TrackVectorRepositoryTest {
 		
 		trackVectorRepo.save(trackVector1);
 		
-		TrackVector trackVector2 = new TrackVector();
+		TrackVectorDao trackVector2 = new TrackVectorDao();
 		trackVector2.setTrackId(1);
 		trackVector2.setX(-70.22d);
 		trackVector2.setZ(217.47d);
@@ -40,7 +40,7 @@ public class TrackVectorRepositoryTest {
 		
 		trackVectorRepo.save(trackVector2);
 		
-		TrackVector trackVector3 = new TrackVector();
+		TrackVectorDao trackVector3 = new TrackVectorDao();
 		trackVector3.setTrackId(1);
 		trackVector3.setX(0.71d);
 		trackVector3.setZ(51.44d);
@@ -48,7 +48,7 @@ public class TrackVectorRepositoryTest {
 		
 		trackVectorRepo.save(trackVector3);
 		
-		TrackVector trackVector4 = new TrackVector();
+		TrackVectorDao trackVector4 = new TrackVectorDao();
 		trackVector4.setTrackId(2);
 		trackVector4.setX(0.08d);
 		trackVector4.setZ(12.18d);
@@ -64,8 +64,8 @@ public class TrackVectorRepositoryTest {
 	
 	@Test
 	public void testRetrieveData() {
-		List<TrackVector> trackVectorList = new ArrayList<>();
-		Iterable<TrackVector> iterable = trackVectorRepo.findAll();
+		List<TrackVectorDao> trackVectorList = new ArrayList<>();
+		Iterable<TrackVectorDao> iterable = trackVectorRepo.findAll();
 		iterable.forEach(trackVectorList::add);
 		
 		Assert.assertEquals(4, trackVectorList.size());
@@ -77,8 +77,8 @@ public class TrackVectorRepositoryTest {
 	
 	@Test
 	public void testFindByTrackId() {
-		List<TrackVector> trackVectorList = new ArrayList<>();
-		Iterable<TrackVector> iterable = trackVectorRepo.findByTrackIdOrderBySeqAsc(1);
+		List<TrackVectorDao> trackVectorList = new ArrayList<>();
+		Iterable<TrackVectorDao> iterable = trackVectorRepo.findByTrackIdOrderBySeqAsc(1);
 		iterable.forEach(trackVectorList::add);
 		
 		Assert.assertEquals(3,  trackVectorList.size());
@@ -87,7 +87,7 @@ public class TrackVectorRepositoryTest {
 		assertTrackVector(trackVectorList.get(2), 1, -70.22d, 217.47d, 3);
 	}
 	
-	private void assertTrackVector(TrackVector trackVector, int trackId, double x, double z, int seq) {
+	private void assertTrackVector(TrackVectorDao trackVector, int trackId, double x, double z, int seq) {
 		Assert.assertEquals(trackId, trackVector.getTrackId().intValue());
 		Assert.assertEquals(x, trackVector.getX().doubleValue(), 0.00000001d);
 		Assert.assertEquals(z, trackVector.getZ().doubleValue(), 0.00000001d);

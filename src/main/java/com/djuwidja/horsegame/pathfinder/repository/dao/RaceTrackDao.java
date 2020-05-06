@@ -9,25 +9,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-public class TrackVector {
-	@Id 
+public class RaceTrackDao {
+	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Getter
-	private Integer id;
+	private Integer Id;
+	
+	@Getter 
+	@Setter
+	private Integer terrainType;
 	
 	@Getter
 	@Setter
-	private Integer trackId;
-	
-	@Getter
-	@Setter
-	private Double x;
-	
-	@Getter
-	@Setter
-	private Double z;
-	
-	@Getter
-	@Setter
-	private Integer seq;
+	private Integer trackType;
 }

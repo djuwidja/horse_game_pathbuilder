@@ -9,7 +9,7 @@ import com.djuwidja.horsegame.pathfinder.meta.RaceTrack;
 
 import lombok.Getter;
 
-public class RaceController {
+public class RaceGenerator {
 	@Getter private Map<Integer, RaceHorse> raceHorseMap;
 	@Getter private RaceTrack raceTrack;
 	@Getter private double fps; // the fps of the race.
@@ -19,7 +19,7 @@ public class RaceController {
 	private RaceAI raceAI;
 	
 		
-	public RaceController(RaceTrack raceTrack, Map<Integer, RaceHorse> raceHorseMap, double fps) throws InvalidLaneIdException {
+	public RaceGenerator(RaceTrack raceTrack, Map<Integer, RaceHorse> raceHorseMap, double fps) throws InvalidLaneIdException {
 		this.raceTrack = raceTrack;
 		this.raceHorseMap = raceHorseMap;
 		this.fps = fps;

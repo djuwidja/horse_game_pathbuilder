@@ -34,6 +34,44 @@ CREATE TABLE `race_track` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `race_track`
+--
+
+LOCK TABLES `race_track` WRITE;
+/*!40000 ALTER TABLE `race_track` DISABLE KEYS */;
+/*!40000 ALTER TABLE `race_track` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `start_point`
+--
+
+DROP TABLE IF EXISTS `start_point`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `start_point` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `set_id` int unsigned NOT NULL,
+  `lane_id` int unsigned NOT NULL,
+  `x` decimal(10,5) NOT NULL,
+  `z` decimal(10,5) NOT NULL,
+  `vec_x` decimal(10,5) NOT NULL,
+  `vec_z` decimal(10,5) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `start_point`
+--
+
+LOCK TABLES `start_point` WRITE;
+/*!40000 ALTER TABLE `start_point` DISABLE KEYS */;
+/*!40000 ALTER TABLE `start_point` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `track_vector`
 --
 
@@ -50,6 +88,15 @@ CREATE TABLE `track_vector` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `track_vector`
+--
+
+LOCK TABLES `track_vector` WRITE;
+/*!40000 ALTER TABLE `track_vector` DISABLE KEYS */;
+/*!40000 ALTER TABLE `track_vector` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -60,4 +107,4 @@ CREATE TABLE `track_vector` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-06 14:49:36
+-- Dump completed on 2020-05-06 18:35:42

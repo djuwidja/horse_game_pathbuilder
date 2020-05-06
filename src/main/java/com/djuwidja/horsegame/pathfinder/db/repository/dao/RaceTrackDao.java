@@ -1,4 +1,4 @@
-package com.djuwidja.horsegame.pathfinder.repository.dao;
+package com.djuwidja.horsegame.pathfinder.db.repository.dao;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+@Entity(name="race_track")
 public class RaceTrackDao {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

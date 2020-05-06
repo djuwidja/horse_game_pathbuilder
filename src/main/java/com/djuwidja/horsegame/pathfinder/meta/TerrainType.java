@@ -1,6 +1,6 @@
 package com.djuwidja.horsegame.pathfinder.meta;
 
-public enum TrackType {
+public enum TerrainType {
 	GRASS,
 	MUD,
 }

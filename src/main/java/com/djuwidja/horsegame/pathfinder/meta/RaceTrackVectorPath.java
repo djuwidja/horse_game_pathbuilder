@@ -3,6 +3,8 @@ package com.djuwidja.horsegame.pathfinder.meta;
 import java.awt.geom.Point2D;
 import java.util.Map;
 
+import com.djuwidja.horsegame.pathfinder.math.Vector2D;
+import com.djuwidja.horsegame.pathfinder.meta.curve.TrackSectionCurveException;
 import com.djuwidja.horsegame.pathfinder.meta.curve.vectorpath.VectorPathCurve;
 import com.djuwidja.horsegame.pathfinder.meta.path.vectorpath.ConstructorParamException;
 
@@ -28,5 +30,10 @@ public class RaceTrackVectorPath extends RaceTrack{
 		} else {
 			throw new InvalidLaneIdException();
 		}
+	}
+	
+	@Override
+	public Vector2D getGuidingVector(Point2D position, Vector2D normal) throws TrackSectionCurveException {
+		return path.getTangentVector(position, normal);
 	}
 }

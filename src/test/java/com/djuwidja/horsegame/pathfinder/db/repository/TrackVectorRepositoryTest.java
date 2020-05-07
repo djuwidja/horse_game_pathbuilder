@@ -25,36 +25,16 @@ public class TrackVectorRepositoryTest {
 	public void setup() {
 		trackVectorRepo.deleteAll();
 		
-		TrackVectorDao trackVector1 = new TrackVectorDao();
-		trackVector1.setTrackId(1);
-		trackVector1.setX(20.58d);
-		trackVector1.setZ(-147.82d);
-		trackVector1.setSeq(1);
-		
+		TrackVectorDao trackVector1 = TrackVectorDao.create(1, 20.58d, -147.82d, 1);		
 		trackVectorRepo.save(trackVector1);
 		
-		TrackVectorDao trackVector2 = new TrackVectorDao();
-		trackVector2.setTrackId(1);
-		trackVector2.setX(-70.22d);
-		trackVector2.setZ(217.47d);
-		trackVector2.setSeq(3);
-		
+		TrackVectorDao trackVector2 = TrackVectorDao.create(1, -70.22d, 217.47d, 3);	
 		trackVectorRepo.save(trackVector2);
 		
-		TrackVectorDao trackVector3 = new TrackVectorDao();
-		trackVector3.setTrackId(1);
-		trackVector3.setX(0.71d);
-		trackVector3.setZ(51.44d);
-		trackVector3.setSeq(2);
-		
+		TrackVectorDao trackVector3 = TrackVectorDao.create(1, 0.71d, 51.44d, 2);		
 		trackVectorRepo.save(trackVector3);
 		
-		TrackVectorDao trackVector4 = new TrackVectorDao();
-		trackVector4.setTrackId(2);
-		trackVector4.setX(0.08d);
-		trackVector4.setZ(12.18d);
-		trackVector4.setSeq(1);
-		
+		TrackVectorDao trackVector4 = TrackVectorDao.create(2, 0.08d, 12.18d, 1);		
 		trackVectorRepo.save(trackVector4);
 	}
 	

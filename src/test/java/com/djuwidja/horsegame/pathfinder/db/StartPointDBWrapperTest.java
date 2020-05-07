@@ -29,21 +29,10 @@ public class StartPointDBWrapperTest extends TestBase {
 	@BeforeAll
 	public void setup() {
 		startPointRepo.deleteAll();	
-		startPointRepo.save(createStartPointDao(1, 1, 0.681d, 0.772d, 0.316d, 0.1208d));
-		startPointRepo.save(createStartPointDao(1, 2, 0.12d, 0.821d, 0.084d, 0.487d));
-		startPointRepo.save(createStartPointDao(1, 3, 0.439d, 0.249d, 0.549d, 0.919d));
-		startPointRepo.save(createStartPointDao(2, 1, 0.977d, 0.578d, 0.349d, 0.5477d));		
-	}
-	
-	private StartPointDao createStartPointDao(int setId, int laneId, double x, double z, double vecX, double vecZ) {
-		StartPointDao startPointDao = new StartPointDao();
-		startPointDao.setSetId(setId);
-		startPointDao.setLaneId(laneId);
-		startPointDao.setX(x);
-		startPointDao.setZ(z);
-		startPointDao.setVecX(vecX);
-		startPointDao.setVecZ(vecZ);
-		return startPointDao;
+		startPointRepo.save(StartPointDao.create(1, 1, 0.681d, 0.772d, 0.316d, 0.1208d));
+		startPointRepo.save(StartPointDao.create(1, 2, 0.12d, 0.821d, 0.084d, 0.487d));
+		startPointRepo.save(StartPointDao.create(1, 3, 0.439d, 0.249d, 0.549d, 0.919d));
+		startPointRepo.save(StartPointDao.create(2, 1, 0.977d, 0.578d, 0.349d, 0.5477d));		
 	}
 	
 	@Test

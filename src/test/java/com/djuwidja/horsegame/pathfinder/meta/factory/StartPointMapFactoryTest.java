@@ -39,13 +39,7 @@ public class StartPointMapFactoryTest {
 	private List<StartPointDao> createDaoList(Random rand, int daoListSize) {
 		List<StartPointDao> daoList = new ArrayList<>();
 		for (int i = 0; i < daoListSize; i++) {
-			StartPointDao startPointDao = new StartPointDao();
-			startPointDao.setSetId(1);
-			startPointDao.setLaneId(i);
-			startPointDao.setX(rand.nextDouble());
-			startPointDao.setZ(rand.nextDouble());
-			startPointDao.setVecX(rand.nextDouble());
-			startPointDao.setVecZ(rand.nextDouble());
+			StartPointDao startPointDao = StartPointDao.create(1, i, rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
 			daoList.add(startPointDao);
 		}
 		return daoList;

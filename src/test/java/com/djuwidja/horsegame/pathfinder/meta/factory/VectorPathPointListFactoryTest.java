@@ -31,11 +31,7 @@ public class VectorPathPointListFactoryTest {
 	private List<TrackVectorDao> createDaoList(Random rand, int daoListSize) {
 		List<TrackVectorDao> daoList = new ArrayList<>();
 		for (int i = 0; i < daoListSize; i++) {
-			TrackVectorDao dao = new TrackVectorDao();
-			dao.setTrackId(1);
-			dao.setX(rand.nextDouble());
-			dao.setZ(rand.nextDouble());
-			dao.setSeq(i);
+			TrackVectorDao dao = TrackVectorDao.create(1, rand.nextDouble(), rand.nextDouble(), i);
 			daoList.add(dao);
 		}
 		return daoList;

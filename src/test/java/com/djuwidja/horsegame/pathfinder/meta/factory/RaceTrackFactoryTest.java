@@ -36,13 +36,7 @@ public class RaceTrackFactoryTest {
 	private List<StartPointDao> createStartPointDaoList(Random rand, int daoListSize) {
 		List<StartPointDao> daoList = new ArrayList<>();
 		for (int i = 0; i < daoListSize; i++) {
-			StartPointDao startPointDao = new StartPointDao();
-			startPointDao.setSetId(1);
-			startPointDao.setLaneId(i);
-			startPointDao.setX(rand.nextDouble());
-			startPointDao.setZ(rand.nextDouble());
-			startPointDao.setVecX(rand.nextDouble());
-			startPointDao.setVecZ(rand.nextDouble());
+			StartPointDao startPointDao = StartPointDao.create(1, i, rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
 			daoList.add(startPointDao);
 		}
 		return daoList;
@@ -51,11 +45,7 @@ public class RaceTrackFactoryTest {
 	private List<TrackVectorDao> createTrackVectorDaoList(Random rand, int daoListSize) {
 		List<TrackVectorDao> daoList = new ArrayList<>();
 		for (int i = 0; i < daoListSize; i++) {
-			TrackVectorDao dao = new TrackVectorDao();
-			dao.setTrackId(1);
-			dao.setX(rand.nextDouble());
-			dao.setZ(rand.nextDouble());
-			dao.setSeq(i);
+			TrackVectorDao dao = TrackVectorDao.create(1, rand.nextDouble(), rand.nextDouble(), i);
 			daoList.add(dao);
 		}
 		return daoList;

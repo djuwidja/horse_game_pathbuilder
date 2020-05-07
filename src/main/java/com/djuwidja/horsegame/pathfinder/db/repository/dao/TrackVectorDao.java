@@ -6,28 +6,32 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Entity(name="track_vector")
 public class TrackVectorDao {
+	public static TrackVectorDao create(int trackId, double x, double z, int seq) {
+		TrackVectorDao dao = new TrackVectorDao();
+		dao.trackId = trackId;
+		dao.x = x;
+		dao.z = z;
+		dao.seq = seq;
+		return dao;
+	}
+	
 	@Id 
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Getter
 	private Integer id;
 	
 	@Getter
-	@Setter
 	private Integer trackId;
 	
 	@Getter
-	@Setter
 	private Double x;
 	
 	@Getter
-	@Setter
 	private Double z;
 	
 	@Getter
-	@Setter
 	private Integer seq;
 }

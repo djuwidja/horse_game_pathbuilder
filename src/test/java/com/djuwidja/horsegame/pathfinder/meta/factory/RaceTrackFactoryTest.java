@@ -20,8 +20,7 @@ public class RaceTrackFactoryTest {
 	public void testCreateSuccess() throws ConstructorParamException {
 		Random rand = new Random();
 		
-		RaceTrackDao trackDao = new RaceTrackDao();
-		trackDao.setTerrainType(1);
+		RaceTrackDao trackDao = RaceTrackDao.create(1, 88, 0.841d, 1.566d, 0.442d, 3.806d, 1);
 		
 		int startPointDaoListSize = 11 + rand.nextInt(9);
 		List<StartPointDao> startPointDaoList = createStartPointDaoList(rand, startPointDaoListSize);

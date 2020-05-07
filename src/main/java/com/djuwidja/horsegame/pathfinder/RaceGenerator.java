@@ -30,19 +30,19 @@ public class RaceGenerator {
 	@Value("${com.djuwidja.horsegame.pathfinder.race-fps:60}")
 	private double fps; // the fps of the race.
 	
-	public void generateRace(int raceTrackId, int startPointSetId, Map<Integer, RaceHorse> raceHorseLaneIdMap, double fps) throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException {
+	public RaceData generateRace(int raceTrackId, int startPointSetId, Map<Integer, RaceHorse> raceHorseLaneIdMap) throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException {
 		RaceTrackDao raceTrackDao = raceTrackDBWrapper.findById(raceTrackId);
 		List<TrackVectorDao> trackVectorDaoList = trackVectorDBWrapper.findByTrackIdOrderBySeqAsc(raceTrackId);
 		List<StartPointDao> startPointDaoList = startPointDBWrapper.findBySetIdOrderByLaneIdAsc(startPointSetId); 
 		
 		RaceTrack raceTrack = RaceTrackFactory.createFromDao(raceTrackDao, trackVectorDaoList, startPointDaoList);
-		double timeInterval = 1d / fps;
-		double raceTime = 0d;
+		double timeInterval = 1d / this.fps;
 		RaceAI raceAI = new RaceAI(raceTrack, raceHorseLaneIdMap);
 		
 		while (!raceAI.isRaceFinished()) {
 			raceAI.update(timeInterval);
-			raceTime += timeInterval;
 		}
+		
+		return raceAI.getRaceData();
 	}
 }

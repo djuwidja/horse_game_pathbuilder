@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.djuwidja.horsegame.pathfinder.ai.RaceAI;
 import com.djuwidja.horsegame.pathfinder.db.RaceTrackDBWrapper;
@@ -19,38 +21,26 @@ import com.djuwidja.horsegame.pathfinder.meta.RaceTrack;
 import com.djuwidja.horsegame.pathfinder.meta.factory.RaceTrackFactory;
 import com.djuwidja.horsegame.pathfinder.meta.path.vectorpath.ConstructorParamException;
 
-import lombok.Getter;
-
+@Component
 public class RaceGenerator {
 	@Autowired private RaceTrackDBWrapper raceTrackDBWrapper;
 	@Autowired private TrackVectorDBWrapper trackVectorDBWrapper;
 	@Autowired private StartPointDBWrapper startPointDBWrapper;
-	
-	@Getter private Map<Integer, RaceHorse> raceHorseMap;
-	@Getter private RaceTrack raceTrack;
-	@Getter private double fps; // the fps of the race.
-	
-	@Getter private double raceTime; // time elapse of the race;
-	private double timeInterval; // the time process of the race after each iteration.
-	private RaceAI raceAI;
-	
 		
-	public RaceGenerator(int raceTrackId, int startPointSetId, Map<Integer, RaceHorse> raceHorseMap, double fps) throws InvalidLaneIdException, ResourceNotFoundException, ConstructorParamException {	
+	@Value("${com.djuwidja.horsegame.pathfinder.race-fps:60}")
+	private double fps; // the fps of the race.
+	
+	public void generateRace(int raceTrackId, int startPointSetId, Map<Integer, RaceHorse> raceHorseLaneIdMap, double fps) throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException {
 		RaceTrackDao raceTrackDao = raceTrackDBWrapper.findById(raceTrackId);
 		List<TrackVectorDao> trackVectorDaoList = trackVectorDBWrapper.findByTrackIdOrderBySeqAsc(raceTrackId);
-		List<StartPointDao> startPointDaoList = startPointDBWrapper.findBySetIdOrderByLaneIdAsc(startPointSetId);
+		List<StartPointDao> startPointDaoList = startPointDBWrapper.findBySetIdOrderByLaneIdAsc(startPointSetId); 
 		
-		this.raceTrack = RaceTrackFactory.createFromDao(raceTrackDao, trackVectorDaoList, startPointDaoList);
-		this.raceHorseMap = raceHorseMap;
-		this.fps = fps;
+		RaceTrack raceTrack = RaceTrackFactory.createFromDao(raceTrackDao, trackVectorDaoList, startPointDaoList);
+		double timeInterval = 1d / fps;
+		double raceTime = 0d;
+		RaceAI raceAI = new RaceAI(raceTrack, raceHorseLaneIdMap);
 		
-		this.timeInterval = 1d / fps;
-		this.raceTime = 0d;
-		this.raceAI = new RaceAI(raceTrack, raceHorseMap);
-	}
-	
-	public void generateRace() {
-		while (!this.raceAI.isRaceFinished()) {
+		while (!raceAI.isRaceFinished()) {
 			raceAI.update(timeInterval);
 			raceTime += timeInterval;
 		}

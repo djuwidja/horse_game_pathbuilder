@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan("com.djuwidja.horsegame")
+@ComponentScan({"com.djuwidja.horsegame", "com.djuwidja.networktype.compression"})
 public class TestConfig {
 
 	@Bean

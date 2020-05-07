@@ -4,12 +4,15 @@ import java.awt.geom.Point2D;
 
 import com.djuwidja.horsegame.pathfinder.math.Vector2D;
 import com.djuwidja.horsegame.pathfinder.meta.RaceHorse;
+import com.djuwidja.horsegame.pathfinder.meta.RaceTrack;
 import com.djuwidja.horsegame.pathfinder.meta.StartPoint;
+import com.djuwidja.horsegame.pathfinder.meta.curve.TrackSectionCurveException;
 
 import lombok.Getter;
 
 public class RaceHorseAI implements AI {
 	@Getter private RaceHorse raceHorse;
+	@Getter private RaceTrack raceTrack;
 	@Getter Point2D position;
 	@Getter Vector2D moveVec;
 	@Getter Vector2D moveNor;
@@ -19,8 +22,9 @@ public class RaceHorseAI implements AI {
 	private double curSpd;
 	private HorseAIState state;
 	
-	public RaceHorseAI(RaceHorse raceHorse, StartPoint startPoint) {
+	public RaceHorseAI(RaceHorse raceHorse, RaceTrack raceTrack, StartPoint startPoint) {
 		this.raceHorse = raceHorse;
+		this.raceTrack = raceTrack;
 		this.position = startPoint.getStartPos();
 		this.moveVec = startPoint.getStartVec();
 		this.moveNor = moveVec.normal();
@@ -43,23 +47,29 @@ public class RaceHorseAI implements AI {
 	}
 		
 	private void maintainSpeed(double timeDelta) {
-		double normalSpd = 0d;
-		double acc = 0d;
-		if (Math.abs(moveVec.getX()) >= 0.95d) {
-			normalSpd = this.normalFwdSpd * timeDelta;
-			acc = raceHorse.getFwdAcc() * timeDelta;
-		} else {
-			normalSpd = this.normalAngSpd * timeDelta;
-			acc = raceHorse.getAngAcc() * timeDelta;
+		try {
+			this.moveVec = raceTrack.getGuidingVector(this.position, this.moveNor);
+			double normalSpd = 0d;
+			double acc = 0d;
+			if (Math.abs(moveVec.getX()) >= 0.80d) {
+				normalSpd = this.normalFwdSpd * timeDelta;
+				acc = raceHorse.getFwdAcc() * timeDelta;
+			} else {
+				normalSpd = this.normalAngSpd * timeDelta;
+				acc = raceHorse.getAngAcc() * timeDelta;
+			}
+			
+			if (curSpd < normalSpd) {
+				curSpd += acc;
+			} else {
+				curSpd = normalSpd;
+			}
+			
+			this.position.setLocation(this.position.getX() + this.moveVec.getX() * curSpd, 
+									  this.position.getY() + this.moveVec.getY() * curSpd);
 		}
-		
-		if (curSpd < normalSpd) {
-			curSpd += acc;
-		} else {
-			curSpd = normalSpd;
+		catch (final TrackSectionCurveException e) {
+			
 		}
-		
-		this.position.setLocation(this.position.getX() + this.moveVec.getX() * curSpd, 
-								  this.position.getY() + this.moveVec.getY() * curSpd);
 	}
 }

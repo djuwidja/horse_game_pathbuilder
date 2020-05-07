@@ -23,7 +23,7 @@ public class RaceAI implements AI{
 			int laneId = entry.getKey();
 			RaceHorse horse = entry.getValue();
 			StartPoint startPoint = raceTrack.getStartPoint(laneId);
-			RaceHorseAI horseAI = new RaceHorseAI(horse, startPoint);
+			RaceHorseAI horseAI = new RaceHorseAI(horse, raceTrack, startPoint);
 			raceHorseAIList[i] = horseAI;
 			i++;
 		}

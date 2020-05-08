@@ -1,5 +1,7 @@
-package com.djuwidja.horsegame.pathfinder.race;
+package com.djuwidja.horsegame.pathfinder.race.data.io;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -22,26 +25,44 @@ import com.djuwidja.horsegame.pathfinder.db.repository.dao.TrackVectorDao;
 import com.djuwidja.horsegame.pathfinder.meta.InvalidLaneIdException;
 import com.djuwidja.horsegame.pathfinder.meta.RaceHorse;
 import com.djuwidja.horsegame.pathfinder.meta.path.vectorpath.ConstructorParamException;
+import com.djuwidja.horsegame.pathfinder.race.RaceGenerator;
 import com.djuwidja.horsegame.pathfinder.race.data.RaceData;
 import com.djuwidja.networktype.compression.CompressionUtilsException;
 
 @SpringBootTest
 @ContextConfiguration(classes=TestConfig.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class RaceGeneratorTest {
+public class RaceDataWriterTest {
 	@Autowired private RaceTrackRepository raceTrackRepo;
 	@Autowired private StartPointRepository startPointRepo;
 	@Autowired private TrackVectorRepository trackVectorRepo;
 	
 	@Autowired private RaceGenerator raceGenerator;
+	@Autowired private RaceDataWriter raceDataWriter;
+	
+	@Value("${com.djuwidja.horsegame.pathfinder.race-data-dir:./raceData}")
+	private String raceDataDir;
+	
+	@Value("${com.djuwidja.horsegame.pathfinder.race-data-ext:rac}")
+	private String raceDataExt;
 	
 	@Test
-	public void testContextLoad() {
-		
+	public void testSerialization() throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException {
+		RaceData raceData = createRaceData();
+		raceDataWriter.serialize(raceData);
 	}
 	
 	@Test
-	public void testStraightLineRaceWithOneHorse() throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException, CompressionUtilsException {
+	public void testWriteFile() throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException, CompressionUtilsException, IOException {
+		RaceData raceData = createRaceData();
+		String filename = raceDataWriter.generateIdAndWriteToFile(raceData);
+		
+		File file = new File(raceDataDir + "/" + filename + "." + raceDataExt);
+		Assert.assertTrue(file.exists() && !file.isDirectory());
+	}
+
+	private RaceData createRaceData()
+			throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException {
 		int startPointSetId = 1;
 		int trackId = createStraightLineTrack(startPointSetId);	
 		Map<Integer, RaceHorse> raceHorseMap = new HashMap<>();
@@ -51,9 +72,7 @@ public class RaceGeneratorTest {
 			raceHorseMap.put(raceHorse.getLaneId(), raceHorse);
 		}
 		RaceData raceData = raceGenerator.generateRace(trackId, startPointSetId, raceHorseMap);
-		
-		Assert.assertTrue(raceData.getTotalRaceTime() >= 120d);
-		Assert.assertEquals(12, raceData.getHorsePathDataMap().size());
+		return raceData;
 	}
 	
 	private int createStraightLineTrack(int startPointSetId) {

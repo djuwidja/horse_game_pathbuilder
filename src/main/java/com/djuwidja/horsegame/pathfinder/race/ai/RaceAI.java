@@ -1,4 +1,4 @@
-package com.djuwidja.horsegame.pathfinder.ai;
+package com.djuwidja.horsegame.pathfinder.race.ai;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.djuwidja.horsegame.pathfinder.RaceData;
-import com.djuwidja.horsegame.pathfinder.RaceHorsePathData;
 import com.djuwidja.horsegame.pathfinder.meta.InvalidLaneIdException;
 import com.djuwidja.horsegame.pathfinder.meta.RaceHorse;
 import com.djuwidja.horsegame.pathfinder.meta.RaceTrack;
 import com.djuwidja.horsegame.pathfinder.meta.StartPoint;
+import com.djuwidja.horsegame.pathfinder.race.data.RaceData;
+import com.djuwidja.horsegame.pathfinder.race.data.RaceHorsePathData;
 
 import lombok.Getter;
 

@@ -1,16 +1,16 @@
-package com.djuwidja.horsegame.pathfinder.ai;
+package com.djuwidja.horsegame.pathfinder.race.ai;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.djuwidja.horsegame.pathfinder.RaceHorsePathData;
 import com.djuwidja.horsegame.pathfinder.math.Line2DException;
 import com.djuwidja.horsegame.pathfinder.math.Vector2D;
 import com.djuwidja.horsegame.pathfinder.meta.RaceHorse;
 import com.djuwidja.horsegame.pathfinder.meta.RaceTrack;
 import com.djuwidja.horsegame.pathfinder.meta.StartPoint;
 import com.djuwidja.horsegame.pathfinder.meta.curve.TrackSectionCurveException;
+import com.djuwidja.horsegame.pathfinder.race.data.RaceHorsePathData;
 
 import lombok.Getter;
 

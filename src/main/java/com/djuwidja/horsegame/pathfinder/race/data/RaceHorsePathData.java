@@ -1,4 +1,4 @@
-package com.djuwidja.horsegame.pathfinder;
+package com.djuwidja.horsegame.pathfinder.race.data;
 
 import java.awt.geom.Point2D;
 

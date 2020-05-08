@@ -2,7 +2,7 @@ version: '3.5'
 services:
    mysql_test:
       image: mysql:latest
-      container_name: horse_game_test_db
+      container_name: horse_game_pathfinder_test_db
       command: --default-authentication-plugin=mysql_native_password
       restart: always
       environment:

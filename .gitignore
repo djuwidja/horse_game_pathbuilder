@@ -43,3 +43,4 @@ out/
 .metadata/
 .config
 /lombok.config
+.rac

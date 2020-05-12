@@ -75,7 +75,7 @@ public class RaceDataWriter {
 		newFileInfo.getFile().createNewFile();
 		FileOutputStream outputStream = new FileOutputStream(newFileInfo.getFilePath());
 		byte[] raceDataBytes = serialize(raceData);
-		byte[] compressedBytes = compressUtil.compress(raceDataBytes);
+		byte[] compressedBytes = compressUtil.compressGZip(raceDataBytes);
 		outputStream.write(compressedBytes);
 		outputStream.close();
 		return newFileInfo.getFileName();

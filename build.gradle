@@ -36,7 +36,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.projectlombok/lombok
 	implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
 	
-	implementation files("$rootDir/libs/network_type-1.0.0.jar")
+	implementation files("$rootDir/libs/network_type-1.0.1.jar")
 }
 
 test {

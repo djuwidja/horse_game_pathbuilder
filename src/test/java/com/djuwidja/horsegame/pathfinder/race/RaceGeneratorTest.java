@@ -41,11 +41,13 @@ public class RaceGeneratorTest {
 	}
 	
 	@Test
-	public void testStraightLineRaceWithOneHorse() throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException, CompressionUtilsException {
+	public void testStraightLineRaceWithMultipleHorses() throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException, CompressionUtilsException {
+		int numHorse = 1;
+		
 		int startPointSetId = 1;
 		int trackId = createStraightLineTrack(startPointSetId);	
 		Map<Integer, RaceHorse> raceHorseMap = new HashMap<>();
-		for (int i = 0; i < 12; i++) {
+		for (int i = 0; i < numHorse; i++) {
 			RaceHorse raceHorse = new RaceHorse(i, i + 1, 1, 1.0d, 1.0d, 0.1d, 0.1d);
 			
 			raceHorseMap.put(raceHorse.getLaneId(), raceHorse);
@@ -53,7 +55,7 @@ public class RaceGeneratorTest {
 		RaceData raceData = raceGenerator.generateRace(trackId, startPointSetId, raceHorseMap);
 		
 		Assert.assertTrue(raceData.getTotalRaceTime() >= 120d);
-		Assert.assertEquals(12, raceData.getHorsePathDataMap().size());
+		Assert.assertEquals(numHorse, raceData.getHorsePathDataMap().size());
 	}
 	
 	private int createStraightLineTrack(int startPointSetId) {

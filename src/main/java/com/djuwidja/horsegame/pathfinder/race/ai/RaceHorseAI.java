@@ -31,6 +31,11 @@ public class RaceHorseAI implements AI {
 	private Vector2D moveVecWithSpd;
 	private double curSpd;
 	
+	private double inFrameNorFwdSpd;
+	private double inFrameNorAngSpd;
+	private double inFrameNorAcc;
+	private double inFrameAngAcc;
+	
 	public RaceHorseAI(RaceHorse raceHorse, RaceTrack raceTrack, StartPoint startPoint) {
 		this.raceHorse = raceHorse;
 		this.raceTrack = raceTrack;
@@ -39,17 +44,24 @@ public class RaceHorseAI implements AI {
 		this.moveNor = moveVec.normal();
 		
 		this.state = HorseAIState.MAINTAIN_SPEED;
-		this.normalFwdSpd = raceHorse.getFwdSpdMax() * 0.8d;
-		this.normalAngSpd = raceHorse.getAngSpdMax() * 0.8d;
+		this.normalFwdSpd = raceHorse.getFwdSpdMax();
+		this.normalAngSpd = raceHorse.getAngSpdMax();
 		this.curFinishLineActivation = 0;
 		this.isFinished = false;
 		this.moveVecWithSpd = new Vector2D();
 		this.positionDataList = new ArrayList<RaceHorsePathData>();
+		
+		this.inFrameNorFwdSpd = 0f;
+		this.inFrameNorAngSpd = 0f;
+		this.inFrameNorAcc = 0f;
+		this.inFrameAngAcc = 0f;
 	}
 
 	@Override
 	public void update(double timeDelta) {
 		if (!this.isFinished) {
+			computeInFrameVar(timeDelta);
+			
 			switch (state) {
 			case MAINTAIN_SPEED:
 				computeMaintainSpeed();
@@ -57,16 +69,23 @@ public class RaceHorseAI implements AI {
 			default:
 				break;
 			}
-			updateMoveVecWithSpd(timeDelta);
+			updateMoveVecWithSpd();
 			checkIsFinished(timeDelta);
 		}	
 		updatePosition(this.moveVecWithSpd);
 		recordPositionData();
 	}
 	
-	private void updateMoveVecWithSpd(double timeDelta) {
+	private void computeInFrameVar(double timeDelta) {
+		this.inFrameNorFwdSpd = this.normalFwdSpd * timeDelta;
+		this.inFrameNorAngSpd = this.normalAngSpd * timeDelta;
+		this.inFrameNorAcc = raceHorse.getFwdAcc() * timeDelta;
+		this.inFrameAngAcc = raceHorse.getAngAcc() * timeDelta;
+	}
+	
+	private void updateMoveVecWithSpd() {
 		this.moveVecWithSpd.set(this.moveVec.getX(), this.moveVec.getY());
-		this.moveVecWithSpd.scalar(this.curSpd * timeDelta);
+		this.moveVecWithSpd.scalar(this.curSpd);
 	}
 	
 	private void checkIsFinished(double timeDelta) {
@@ -91,7 +110,7 @@ public class RaceHorseAI implements AI {
 	}
 	
 	private void recordPositionData() {		
-		RaceHorsePathData data = new RaceHorsePathData(this.position, this.moveVec, this.curSpd);
+		RaceHorsePathData data = new RaceHorsePathData(this.position.getX(), this.position.getY(), this.moveVec.getX(), this.moveVec.getY(), this.curSpd);
 		this.positionDataList.add(data);
 	}
 		
@@ -101,11 +120,11 @@ public class RaceHorseAI implements AI {
 			double normalSpd = 0d;
 			double acc = 0d;
 			if (Math.abs(moveVec.getX()) >= 0.80d) {
-				normalSpd = this.normalFwdSpd;
-				acc = raceHorse.getFwdAcc();
+				normalSpd = this.inFrameNorFwdSpd;
+				acc = this.inFrameNorAcc;
 			} else {
-				normalSpd = this.normalAngSpd;
-				acc = raceHorse.getAngAcc();
+				normalSpd = this.inFrameNorAngSpd;
+				acc = this.inFrameAngAcc;
 			}
 			
 			if (this.curSpd < normalSpd) {

@@ -67,7 +67,7 @@ public class RaceDataWriterTest {
 		int trackId = createStraightLineTrack(startPointSetId);	
 		Map<Integer, RaceHorse> raceHorseMap = new HashMap<>();
 		for (int i = 0; i < 1; i++) {
-			RaceHorse raceHorse = new RaceHorse(i, i + 1, 1, 1.0d, 1.0d, 1d, 1d);
+			RaceHorse raceHorse = new RaceHorse(i, i + 1, 1, 1.0d, 1.0d, 0.1d, 0.1d);
 			
 			raceHorseMap.put(raceHorse.getLaneId(), raceHorse);
 		}

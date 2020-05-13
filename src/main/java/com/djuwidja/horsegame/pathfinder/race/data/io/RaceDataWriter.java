@@ -50,10 +50,10 @@ public class RaceDataWriter {
 			List<JSONObject> locationObjList = new ArrayList<>(pathData.size());
 			for (RaceHorsePathData data : pathData) {
 				JSONObject locationObj = new JSONObject();
-				locationObj.put("x", data.getPosition().getX());
-				locationObj.put("z", data.getPosition().getY());
-				locationObj.put("vecX", data.getDirection().getX());
-				locationObj.put("vecZ", data.getDirection().getY());
+				locationObj.put("x", data.getX());
+				locationObj.put("z", data.getY());
+				locationObj.put("vecX", data.getVecX());
+				locationObj.put("vecZ", data.getVecY());
 				locationObj.put("speed", data.getSpeed());
 				locationObjList.add(locationObj);
 			}

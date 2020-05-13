@@ -1,19 +1,24 @@
 package com.djuwidja.horsegame.pathfinder.race.data;
 
-import java.awt.geom.Point2D;
-
-import com.djuwidja.horsegame.pathfinder.math.Vector2D;
-
 import lombok.Getter;
 
 public class RaceHorsePathData {
-	@Getter private Point2D position;
-	@Getter private Vector2D direction;
+	@Getter private double x;
+	@Getter private double y;
+	@Getter private double vecX;
+	@Getter private double vecY;
 	@Getter private double speed;
 	
-	public RaceHorsePathData(Point2D position, Vector2D direction, double speed) {
-		this.position = position;
-		this.direction = direction;
+	public RaceHorsePathData(double x, double y, double vecX, double vecY, double speed) {
+		this.x = x;
+		this.y = y;
+		this.vecX = vecX;
+		this.vecY = vecY;
 		this.speed = speed;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("RaceHorsePathData[pos=(%f,%f), dir=(%f,%f), spd=%f]", x, y, vecX, vecY, speed);
 	}
 }

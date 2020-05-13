@@ -3,11 +3,13 @@ package com.djuwidja.horsegame.pathfinder.race.data.io;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -32,37 +34,36 @@ public class RaceDataWriter {
 		
 	@Autowired private CompressionUtils compressUtil;
 	
-	public byte[] serialize(RaceData raceData) {
-		ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
-		buffer.putDouble(raceData.getTotalRaceTime()); // 8 bytes
-		
-		List<Double> timeTrack = raceData.getTimeTrack();
-		buffer.putInt(timeTrack.size());  // 4 bytes
-		for (Double timeInterval : timeTrack) {
-			buffer.putDouble(timeInterval); // 8 bytes
-		}
+	public byte[] serialize(RaceData raceData) {	
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("raceTime", raceData.getTotalRaceTime());
+		jsonObj.put("timeTrack", raceData.getTimeTrack());		
 		
 		Map<Integer, List<RaceHorsePathData>> horsePathDataMap = raceData.getHorsePathDataMap();
-		buffer.putInt(horsePathDataMap.size()); // 4 bytes
+		List<JSONObject> pathObjList = new ArrayList<>(horsePathDataMap.size());	
 		for (Map.Entry<Integer, List<RaceHorsePathData>> entry : horsePathDataMap.entrySet()) {
-			int horseId = entry.getKey();
+			JSONObject horsePathObj = new JSONObject();
 			List<RaceHorsePathData> pathData = entry.getValue();
-			buffer.putInt(horseId); // 4 bytes
-			buffer.putInt(pathData.size()); // 4 bytes
+			
+			horsePathObj.put("id", entry.getKey());
+			
+			List<JSONObject> locationObjList = new ArrayList<>(pathData.size());
 			for (RaceHorsePathData data : pathData) {
-				buffer.putDouble(data.getPosition().getX()); // 8 bytes
-				buffer.putDouble(data.getPosition().getY()); // 8 bytes
-				buffer.putDouble(data.getDirection().getX()); // 8 bytes
-				buffer.putDouble(data.getDirection().getY()); // 8 bytes
-				buffer.putDouble(data.getSpeed()); // 8 bytes
+				JSONObject locationObj = new JSONObject();
+				locationObj.put("x", data.getPosition().getX());
+				locationObj.put("z", data.getPosition().getY());
+				locationObj.put("vecX", data.getDirection().getX());
+				locationObj.put("vecZ", data.getDirection().getY());
+				locationObj.put("speed", data.getSpeed());
+				locationObjList.add(locationObj);
 			}
+			horsePathObj.put("path", locationObjList);
+			pathObjList.add(horsePathObj);
 		}
+		jsonObj.put("horses", pathObjList);
 		
-		int lastPosition = buffer.position();
-		byte[] result = new byte[lastPosition];
-		buffer.position(0);
-		buffer.get(result, 0, lastPosition);
-		return result;
+		String jsonStr = jsonObj.toString();
+		return jsonStr.getBytes(StandardCharsets.UTF_8);
 	}
 	
 	public String generateIdAndWriteToFile(RaceData raceData) throws IOException, CompressionUtilsException {
@@ -74,7 +75,7 @@ public class RaceDataWriter {
 		FileInfo newFileInfo = getUniqueFileName();
 		newFileInfo.getFile().createNewFile();
 		FileOutputStream outputStream = new FileOutputStream(newFileInfo.getFilePath());
-		byte[] raceDataBytes = serialize(raceData);
+		byte[] raceDataBytes = serialize(raceData);		
 		byte[] compressedBytes = compressUtil.compressGZip(raceDataBytes);
 		outputStream.write(compressedBytes);
 		outputStream.close();

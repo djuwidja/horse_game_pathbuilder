@@ -63,11 +63,12 @@ public class RaceDataWriterTest {
 
 	private RaceData createRaceData()
 			throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException {
+		int numRaceHorses = 12;
 		int startPointSetId = 1;
 		int trackId = createStraightLineTrack(startPointSetId);	
 		Map<Integer, RaceHorse> raceHorseMap = new HashMap<>();
-		for (int i = 0; i < 1; i++) {
-			RaceHorse raceHorse = new RaceHorse(i, i + 1, 1, 1.0d, 1.0d, 0.1d, 0.1d);
+		for (int i = 0; i < numRaceHorses; i++) {
+			RaceHorse raceHorse = new RaceHorse(i, i + 1, 1, 1.0d, 1.0d, 1d, 1d);
 			
 			raceHorseMap.put(raceHorse.getLaneId(), raceHorse);
 		}
@@ -80,11 +81,11 @@ public class RaceDataWriterTest {
 		startPointRepo.deleteAll();
 		trackVectorRepo.deleteAll();
 		
-		//create a straight line track from 0.0d to 10.0d with finishing lines at x = 9;
-		RaceTrackDao raceTrackDao = raceTrackRepo.save(RaceTrackDao.create(1, 1, 0.9d, -10.0d, 0.9d, 10.0d, 1));
+		//create a straight line track from 0.0d to 125.0d with finishing lines at x = 120;
+		RaceTrackDao raceTrackDao = raceTrackRepo.save(RaceTrackDao.create(1, 1, 120d, -10.0d, 120d, 10.0d, 1));
 		int trackId = raceTrackDao.getId();
 		trackVectorRepo.save(TrackVectorDao.create(trackId, 0.0d, 0.0d, 1));
-		trackVectorRepo.save(TrackVectorDao.create(trackId, 1.0d, 0.0d, 2));
+		trackVectorRepo.save(TrackVectorDao.create(trackId, 125.0d, 0.0d, 2));
 		for (int i = 0; i < 12; i++) {
 			startPointRepo.save(StartPointDao.create(startPointSetId, i + 1, 0.0d, 0.0d, 1.0d, 0.0d));
 		}

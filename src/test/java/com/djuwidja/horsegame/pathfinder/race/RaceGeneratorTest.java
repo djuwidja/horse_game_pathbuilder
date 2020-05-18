@@ -1,6 +1,8 @@
 package com.djuwidja.horsegame.pathfinder.race;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,7 @@ import com.djuwidja.horsegame.pathfinder.meta.InvalidLaneIdException;
 import com.djuwidja.horsegame.pathfinder.meta.RaceHorse;
 import com.djuwidja.horsegame.pathfinder.meta.path.vectorpath.ConstructorParamException;
 import com.djuwidja.horsegame.pathfinder.race.data.RaceData;
+import com.djuwidja.horsegame.pathfinder.race.data.io.RaceDataWriter;
 import com.djuwidja.networktype.compression.CompressionUtilsException;
 
 @SpringBootTest
@@ -38,6 +41,7 @@ public class RaceGeneratorTest {
 	@Autowired private TrackVectorRepository trackVectorRepo;
 	
 	@Autowired private RaceGenerator raceGenerator;
+	@Autowired private RaceDataWriter raceDataWriter;
 	
 	@Test
 	public void testContextLoad() {
@@ -63,10 +67,32 @@ public class RaceGeneratorTest {
 	}
 	
 	@Test
-	public void testModelledRaceWithMultipleHorses() {
-		createModelledTrack();
+	public void testModelledRaceWithMultipleHorses() throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException, IOException, CompressionUtilsException {
+		int trackId = createModelledTrack();
 		
+		int numHorses = 12;
+		int startPointSetId = 1;
+		Map<Integer, RaceHorse> raceHorseMap = new HashMap<>();
+		List<Integer> expectedRankList = new ArrayList<>();
+		for (int i = 0; i < numHorses; i++) {
+			expectedRankList.add(i + 1);
+		}
+		Collections.shuffle(expectedRankList);
 		
+		double forwardSpdMax = 5d;
+		double angularSpdMax = 5d;
+		double forwardAcc = 0.005d;
+		double angularAcc = 0.005d;
+		
+		for (int i = 0; i < numHorses; i++) {
+			int laneId = i;
+			int rank = expectedRankList.get(i);
+			RaceHorse raceHorse = new RaceHorse(i, laneId, rank, forwardSpdMax, angularSpdMax, forwardAcc, angularAcc);
+			raceHorseMap.put(laneId, raceHorse);
+		}
+		
+		RaceData raceData = raceGenerator.generateRace(trackId, startPointSetId, raceHorseMap);
+		raceDataWriter.generateIdAndWriteToFile(raceData);
 	}
 	
 	private int createStraightLineTrack(int startPointSetId) {
@@ -109,7 +135,7 @@ public class RaceGeneratorTest {
 		for (int i = 0; i < trackVectorArr.length(); i++) {
 			JSONObject trackVectorObj = (JSONObject) trackVectorArr.get(i);
 			TrackVectorDao trackVectorDao = TrackVectorDao.create(
-					trackVectorObj.getInt("trackId"), 
+					trackId,
 					trackVectorObj.getDouble("x"), 
 					trackVectorObj.getDouble("z"), 
 					trackVectorObj.getInt("seq"));

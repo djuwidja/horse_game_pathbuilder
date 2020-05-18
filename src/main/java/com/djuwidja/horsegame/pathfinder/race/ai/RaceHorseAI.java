@@ -64,7 +64,7 @@ public class RaceHorseAI implements AI {
 			
 			switch (state) {
 			case MAINTAIN_SPEED:
-				computeMaintainSpeed();
+				computeMaintainSpeed(timeDelta);
 				break;
 			default:
 				break;
@@ -113,8 +113,10 @@ public class RaceHorseAI implements AI {
 		RaceHorsePathData data = new RaceHorsePathData(this.position.getX(), this.position.getY(), this.moveVec.getX(), this.moveVec.getY(), this.curSpd);
 		this.positionDataList.add(data);
 	}
-		
-	private void computeMaintainSpeed() {
+	
+//	private boolean firstTime = false;
+//	private double timeLapse = 0f;
+	private void computeMaintainSpeed(double timeDelta) {
 		try {
 			this.moveVec = raceTrack.getGuidingVector(this.position, this.moveNor);
 			double normalSpd = 0d;
@@ -129,8 +131,15 @@ public class RaceHorseAI implements AI {
 			
 			if (this.curSpd < normalSpd) {
 				this.curSpd += acc;
+//				timeLapse += timeDelta;
 			} else {
 				this.curSpd = normalSpd;
+//				if (!firstTime) {
+//					firstTime = true;
+//					timeLapse += timeDelta;
+//					System.out.println(String.format("Time to max=%f ifAcc=%f normalSpd=%f", timeLapse, acc, normalSpd));
+//					
+//				}
 			}
 		}
 		catch (final TrackSectionCurveException e) {

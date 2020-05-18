@@ -28,7 +28,7 @@ public class RaceGenerator {
 	@Autowired private TrackVectorDBWrapper trackVectorDBWrapper;
 	@Autowired private StartPointDBWrapper startPointDBWrapper;
 		
-	@Value("${com.djuwidja.horsegame.pathfinder.race-fps:60}")
+	@Value("${com.djuwidja.horsegame.pathfinder.race-fps:2}")
 	private double fps; // the fps of the race.
 	
 	public RaceData generateRace(int raceTrackId, int startPointSetId, Map<Integer, RaceHorse> raceHorseLaneIdMap) throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException {

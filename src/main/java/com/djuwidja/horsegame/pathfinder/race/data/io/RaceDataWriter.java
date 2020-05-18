@@ -34,7 +34,7 @@ public class RaceDataWriter {
 		
 	@Autowired private CompressionUtils compressUtil;
 	
-	public byte[] serialize(RaceData raceData) {	
+	public byte[] serialize(RaceData raceData) {		
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("raceTime", raceData.getTotalRaceTime());
 		jsonObj.put("timeTrack", raceData.getTimeTrack());		
@@ -52,9 +52,9 @@ public class RaceDataWriter {
 				JSONObject locationObj = new JSONObject();
 				locationObj.put("x", data.getX());
 				locationObj.put("z", data.getY());
-				locationObj.put("vecX", data.getVecX());
-				locationObj.put("vecZ", data.getVecY());
-				locationObj.put("speed", data.getSpeed());
+				locationObj.put("vx", data.getVecX());
+				locationObj.put("vz", data.getVecY());
+				locationObj.put("sp", data.getSpeed());
 				locationObjList.add(locationObj);
 			}
 			horsePathObj.put("path", locationObjList);

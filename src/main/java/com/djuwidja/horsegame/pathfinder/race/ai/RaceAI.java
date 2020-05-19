@@ -40,6 +40,8 @@ public class RaceAI implements AI {
 		this.isRaceFinished = false;
 		this.raceTime = 0d;
 		this.timeTrack = new ArrayList<>();
+		//capture the first frame
+		this.timeTrack.add(0d);
 	}
 	
 	@Override

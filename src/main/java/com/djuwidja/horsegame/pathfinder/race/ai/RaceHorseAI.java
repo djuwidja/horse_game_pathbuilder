@@ -49,6 +49,8 @@ public class RaceHorseAI implements AI {
 		this.isFinished = false;
 		this.moveVecWithSpd = new Vector2D();
 		this.positionDataList = new ArrayList<RaceHorsePathData>();
+		//capture the first frame
+		this.recordPositionData();
 		
 		this.inFrameNorAcc = 0f;
 		this.inFrameAngAcc = 0f;

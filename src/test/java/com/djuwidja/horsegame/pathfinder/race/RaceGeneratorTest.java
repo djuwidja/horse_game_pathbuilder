@@ -81,8 +81,8 @@ public class RaceGeneratorTest {
 		
 		double forwardSpdMax = 5d;
 		double angularSpdMax = 5d;
-		double forwardAcc = 0.005d;
-		double angularAcc = 0.005d;
+		double forwardAcc = 0.5d;
+		double angularAcc = 0.5d;
 		
 		for (int i = 0; i < numHorses; i++) {
 			int laneId = i;
@@ -93,6 +93,7 @@ public class RaceGeneratorTest {
 		
 		RaceData raceData = raceGenerator.generateRace(trackId, startPointSetId, raceHorseMap);
 		raceDataWriter.generateIdAndWriteToFile(raceData);
+		System.out.println(String.format("total race time = %f", raceData.getTotalRaceTime()));
 	}
 	
 	private int createStraightLineTrack(int startPointSetId) {

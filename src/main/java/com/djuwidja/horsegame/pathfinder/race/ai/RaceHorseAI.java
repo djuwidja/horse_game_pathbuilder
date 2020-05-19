@@ -22,6 +22,7 @@ public class RaceHorseAI implements AI {
 	@Getter Vector2D moveNor;
 	@Getter boolean isFinished;
 	@Getter private List<RaceHorsePathData> positionDataList;
+	@Getter private double raceTime;
 	
 	private double normalFwdSpd;
 	private double normalAngSpd;
@@ -31,8 +32,6 @@ public class RaceHorseAI implements AI {
 	private Vector2D moveVecWithSpd;
 	private double curSpd;
 	
-	private double inFrameNorFwdSpd;
-	private double inFrameNorAngSpd;
 	private double inFrameNorAcc;
 	private double inFrameAngAcc;
 	
@@ -51,15 +50,16 @@ public class RaceHorseAI implements AI {
 		this.moveVecWithSpd = new Vector2D();
 		this.positionDataList = new ArrayList<RaceHorsePathData>();
 		
-		this.inFrameNorFwdSpd = 0f;
-		this.inFrameNorAngSpd = 0f;
 		this.inFrameNorAcc = 0f;
 		this.inFrameAngAcc = 0f;
+		this.raceTime = 0f;
 	}
 
 	@Override
 	public void update(double timeDelta) {
 		if (!this.isFinished) {
+			this.raceTime += timeDelta;
+			
 			computeInFrameVar(timeDelta);
 			
 			switch (state) {
@@ -69,7 +69,7 @@ public class RaceHorseAI implements AI {
 			default:
 				break;
 			}
-			updateMoveVecWithSpd();
+			updateMoveVecWithSpd(timeDelta);
 			checkIsFinished(timeDelta);
 		}	
 		updatePosition(this.moveVecWithSpd);
@@ -77,15 +77,13 @@ public class RaceHorseAI implements AI {
 	}
 	
 	private void computeInFrameVar(double timeDelta) {
-		this.inFrameNorFwdSpd = this.normalFwdSpd * timeDelta;
-		this.inFrameNorAngSpd = this.normalAngSpd * timeDelta;
 		this.inFrameNorAcc = raceHorse.getFwdAcc() * timeDelta;
 		this.inFrameAngAcc = raceHorse.getAngAcc() * timeDelta;
 	}
 	
-	private void updateMoveVecWithSpd() {
+	private void updateMoveVecWithSpd(double timeDelta) {
 		this.moveVecWithSpd.set(this.moveVec.getX(), this.moveVec.getY());
-		this.moveVecWithSpd.scalar(this.curSpd);
+		this.moveVecWithSpd.scalar(this.curSpd * timeDelta);
 	}
 	
 	private void checkIsFinished(double timeDelta) {
@@ -114,32 +112,23 @@ public class RaceHorseAI implements AI {
 		this.positionDataList.add(data);
 	}
 	
-//	private boolean firstTime = false;
-//	private double timeLapse = 0f;
 	private void computeMaintainSpeed(double timeDelta) {
 		try {
 			this.moveVec = raceTrack.getGuidingVector(this.position, this.moveNor);
 			double normalSpd = 0d;
 			double acc = 0d;
 			if (Math.abs(moveVec.getX()) >= 0.80d) {
-				normalSpd = this.inFrameNorFwdSpd;
+				normalSpd = this.normalFwdSpd;
 				acc = this.inFrameNorAcc;
 			} else {
-				normalSpd = this.inFrameNorAngSpd;
+				normalSpd = this.normalAngSpd;
 				acc = this.inFrameAngAcc;
 			}
 			
 			if (this.curSpd < normalSpd) {
 				this.curSpd += acc;
-//				timeLapse += timeDelta;
 			} else {
 				this.curSpd = normalSpd;
-//				if (!firstTime) {
-//					firstTime = true;
-//					timeLapse += timeDelta;
-//					System.out.println(String.format("Time to max=%f ifAcc=%f normalSpd=%f", timeLapse, acc, normalSpd));
-//					
-//				}
 			}
 		}
 		catch (final TrackSectionCurveException e) {

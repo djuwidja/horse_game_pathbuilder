@@ -15,8 +15,9 @@ public class ParabolicCurveTest {
 		Point2D startPt = new Point2D.Double(0d, 1d);
 		Point2D endPt = new Point2D.Double(0d, -1d);
 		Point2D vertex = new Point2D.Double(-1d, 0d);
+		Point2D controlPt = new Point2D.Double(0d, 0d);
 		
-		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex);
+		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex, controlPt);
 		Assert.assertEquals(Direction.SOUTH, section.getDirection());
 	}
 	
@@ -25,8 +26,9 @@ public class ParabolicCurveTest {
 		Point2D startPt = new Point2D.Double(0d, -1d);
 		Point2D endPt = new Point2D.Double(0d, 1d);
 		Point2D vertex = new Point2D.Double(-1d, 0d);
+		Point2D controlPt = new Point2D.Double(0d, 0d);
 		
-		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex);
+		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex, controlPt);
 		Assert.assertEquals(Direction.NORTH, section.getDirection());
 	}
 	
@@ -39,13 +41,11 @@ public class ParabolicCurveTest {
 		Point2D vertex = new Point2D.Double(-1d, 0d);
 		Point2D control = new Point2D.Double(0d, 0d);
 		
-		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex);
+		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex, control);
 		Random rand = new Random();
 		for (int i = 0; i < sampleSize; i++) {
 			Point2D pt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
-			Vector2D normal = new Vector2D(pt.getX() - control.getX(), pt.getY() - control.getY());
-			normal.normalize();
-			Vector2D vec = section.getTangentVector(pt, normal);
+			Vector2D vec = section.getTangentVector(pt);
 			
 			Assert.assertTrue(vec.getY() > 0);
 		}
@@ -60,13 +60,11 @@ public class ParabolicCurveTest {
 		Point2D vertex = new Point2D.Double(-1d, 0d);
 		Point2D control = new Point2D.Double(0d, 0d);
 		
-		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex);
+		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex, control);
 		Random rand = new Random();
 		for (int i = 0; i < sampleSize; i++) {
 			Point2D pt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
-			Vector2D normal = new Vector2D(pt.getX() - control.getX(), pt.getY() - control.getY());
-			normal.normalize();
-			Vector2D vec = section.getTangentVector(pt, normal);
+			Vector2D vec = section.getTangentVector(pt);
 			
 			Assert.assertTrue(vec.getY() < 0);
 		}

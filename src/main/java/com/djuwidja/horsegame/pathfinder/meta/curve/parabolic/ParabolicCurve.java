@@ -12,21 +12,27 @@ import com.djuwidja.horsegame.pathfinder.meta.curve.TrackSectionCurve;
 public class ParabolicCurve implements TrackSectionCurve {
 	@Getter private int sectionType;
 	@Getter private Direction direction;
+	@Getter private Point2D controlPt;
 	private Parabola2D model;	
 	
-	public ParabolicCurve(Point2D startPt, Point2D endPt, Point2D vertex) {
+	public ParabolicCurve(Point2D startPt, Point2D endPt, Point2D vertex, Point2D controlPt) {
 		model = new Parabola2D(startPt, endPt, vertex);
 		if (startPt.getY() - endPt.getY() > 0d) {
 			direction = Direction.SOUTH;
 		} else {
 			direction = Direction.NORTH;
 		}
+		
+		this.controlPt = controlPt;
 	}
 	
 	@Override
-	public Vector2D getTangentVector(Point2D pt, Vector2D normal) {
-		double t = model.getTimeOfImpact(pt, normal);	
-		Point2D intersectPt = new Point2D.Double(pt.getX() + t * normal.getX(), pt.getY() + t * normal.getY());
+	public Vector2D getTangentVector(Point2D pt) {
+		Vector2D controlVec = new Vector2D(controlPt.getX() - pt.getX(), controlPt.getY() - pt.getY());
+		controlVec.normalize();
+		
+		double t = model.getTimeOfImpact(pt, controlVec);	
+		Point2D intersectPt = new Point2D.Double(pt.getX() + t * controlVec.getX(), pt.getY() + t * controlVec.getY());
 		double slope = model.getTangentSlope(intersectPt.getY());
 		// point is at vertex when slope == 0
 		if (slope == 0d) {

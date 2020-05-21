@@ -13,12 +13,15 @@ import com.djuwidja.horsegame.pathfinder.meta.path.vectorpath.VectorPathSect;
 public class VectorPathCurve implements TrackSectionCurve {
 	private VectorPath path;
 
-	public VectorPathCurve(Point2D[] pointList) throws ConstructorParamException {
-		this.path = new VectorPath(pointList);
+	public VectorPathCurve(Point2D[] pointList, Point2D controlPt) throws ConstructorParamException {
+		this.path = new VectorPath(pointList, controlPt);
 	}
 
 	@Override
-	public Vector2D getTangentVector(Point2D pt, Vector2D normal) throws TrackSectionCurveException {
+	public Vector2D getTangentVector(Point2D pt) throws TrackSectionCurveException {
+		Vector2D controlVec = new Vector2D(path.getControlPt().getX() - pt.getX(), path.getControlPt().getY() - pt.getY());
+		controlVec.normalize();
+		
 		double closestTime = Double.MAX_VALUE;
 		VectorPathSect closestSect = null;
 
@@ -26,14 +29,13 @@ public class VectorPathCurve implements TrackSectionCurve {
 		for (int i = 0; i < sectList.length; i++) {
 			VectorPathSect sect = sectList[i];
 			try {
-				double timeOfImpact = sect.getLine().getTimeOfImpact(pt, normal);
-				if (timeOfImpact >= 0d) {
-					Point2D intersectPoint = new Point2D.Double(pt.getX() + normal.getX() * timeOfImpact, pt.getY() + normal.getY() * timeOfImpact);
-					if (isIntersectionWithinBound(sect, intersectPoint)) {
-						if (timeOfImpact < closestTime) {
-							closestTime = timeOfImpact;
-							closestSect = sect;
-						}
+				double timeOfImpact = sect.getLine().getTimeOfImpact(pt, controlVec);
+				Point2D intersectPoint = new Point2D.Double(pt.getX() + controlVec.getX() * timeOfImpact, pt.getY() + controlVec.getY() * timeOfImpact);
+				if (sect.isPointWithinBound(intersectPoint)) {
+					double absTimeOfImpact = Math.abs(timeOfImpact);
+					if (absTimeOfImpact < closestTime) {
+						closestTime = absTimeOfImpact;
+						closestSect = sect;
 					}
 				}
 			} catch (final Line2DException e) {
@@ -46,19 +48,5 @@ public class VectorPathCurve implements TrackSectionCurve {
 		} else {
 			return closestSect.getVector();
 		}
-	}
-		
-	private boolean isIntersectionWithinBound(VectorPathSect sect, Point2D intersectionPt) {
-		Point2D startPt = sect.getStartPt();
-		Point2D endPt = sect.getEndPt();
-		
-		boolean xBound = isWithinBound(startPt.getX(), endPt.getX(), intersectionPt.getX());
-		boolean yBound = isWithinBound(startPt.getY(), endPt.getY(), intersectionPt.getY());
-		
-		return xBound && yBound;
-	}
-	
-	private boolean isWithinBound(double bound1, double bound2, double value) {
-		return (bound1 <= value && value <= bound2) || (bound2 <= value && value <= bound1);
 	}
 }

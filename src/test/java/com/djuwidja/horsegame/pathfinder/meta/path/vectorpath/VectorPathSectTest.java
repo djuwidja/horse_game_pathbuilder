@@ -29,4 +29,44 @@ public class VectorPathSectTest {
 			Assert.assertEquals(vec.getY(), section.getVector().getY(), 0.00000001d);
 		}
 	}
+	
+	@Test
+	public void testWithinBoundPlaneY() {
+		Point2D startPt = new Point2D.Double(10d, 0d);
+		Point2D endPt = new Point2D.Double(-10d, 0d);
+		
+		VectorPathSect sect = new VectorPathSect(startPt, endPt);
+		Assert.assertTrue(sect.isPointWithinBound(new Point2D.Double(8d, 0d)));
+		Assert.assertTrue(sect.isPointWithinBound(new Point2D.Double(10d, 0d)));
+		Assert.assertTrue(sect.isPointWithinBound(new Point2D.Double(-10d, 0d)));
+		Assert.assertFalse(sect.isPointWithinBound(new Point2D.Double(66d, 0d)));
+		Assert.assertFalse(sect.isPointWithinBound(new Point2D.Double(8d, 4d)));
+	}
+	
+	@Test
+	public void testWithinBoundPlaneX() {
+		Point2D startPt = new Point2D.Double(0d, 10d);
+		Point2D endPt = new Point2D.Double(0d, -10d);
+		
+		VectorPathSect sect = new VectorPathSect(startPt, endPt);
+		Assert.assertTrue(sect.isPointWithinBound(new Point2D.Double(0d, 8d)));
+		Assert.assertTrue(sect.isPointWithinBound(new Point2D.Double(0d, 10d)));
+		Assert.assertTrue(sect.isPointWithinBound(new Point2D.Double(0d, -10d)));
+		Assert.assertFalse(sect.isPointWithinBound(new Point2D.Double(0d, 66d)));
+		Assert.assertFalse(sect.isPointWithinBound(new Point2D.Double(4d, 8d)));
+	}
+	
+	@Test
+	public void testWithinBoundLine() {
+		Point2D startPt = new Point2D.Double(10d, 10d);
+		Point2D endPt = new Point2D.Double(-10d, -10d);
+		
+		VectorPathSect sect = new VectorPathSect(startPt, endPt);
+		Assert.assertTrue(sect.isPointWithinBound(new Point2D.Double(8d, 8d)));
+		Assert.assertTrue(sect.isPointWithinBound(new Point2D.Double(10d, 10d)));
+		Assert.assertTrue(sect.isPointWithinBound(new Point2D.Double(-10d, -10d)));
+		Assert.assertFalse(sect.isPointWithinBound(new Point2D.Double(11d, 11d)));
+		Assert.assertFalse(sect.isPointWithinBound(new Point2D.Double(-11d, -11d)));
+		Assert.assertTrue(sect.isPointWithinBound(new Point2D.Double(5d, -7d)));
+	}
 }

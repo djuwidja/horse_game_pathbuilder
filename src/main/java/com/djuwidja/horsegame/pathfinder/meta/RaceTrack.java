@@ -20,5 +20,5 @@ public abstract class RaceTrack {
 	}
 	
 	public abstract StartPoint getStartPoint(int laneId) throws InvalidLaneIdException;
-	public abstract Vector2D getGuidingVector(Point2D position, Vector2D normal) throws TrackSectionCurveException;
+	public abstract Vector2D getGuidingVector(Point2D position) throws TrackSectionCurveException;
 }

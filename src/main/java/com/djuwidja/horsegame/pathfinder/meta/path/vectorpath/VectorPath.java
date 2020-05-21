@@ -6,19 +6,30 @@ import lombok.Getter;
 
 public class VectorPath {
 	@Getter private VectorPathSect[] vectorList;
+	@Getter private Point2D controlPt;
 	
-	public VectorPath(Point2D[] pointList) throws ConstructorParamException {
+	public VectorPath(Point2D[] pointList, Point2D controlPt) throws ConstructorParamException {
 		if (pointList.length < 2) {
 			throw new ConstructorParamException("Length of point list must be at least 2.");
 		}
 		
-		vectorList = new VectorPathSect[pointList.length - 1];
+		vectorList = new VectorPathSect[pointList.length];
 		
-		for (int i = 1; i < pointList.length; i++) {
-			Point2D startPt = pointList[i-1];
-			Point2D endPt = pointList[i];
+		for (int i = 0; i < pointList.length; i++) {
+			Point2D startPt;
+			Point2D endPt;
+			if (i == pointList.length - 1) {
+				// path loop back to first point at the end
+				startPt = pointList[i];
+				endPt = pointList[0];
+			} else {
+				startPt = pointList[i];
+				endPt = pointList[i + 1];
+			}
 			
-			vectorList[i - 1] = new VectorPathSect(startPt, endPt);
+			vectorList[i] = new VectorPathSect(startPt, endPt);
 		}
+		
+		this.controlPt = controlPt;
 	}
 }

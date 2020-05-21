@@ -22,22 +22,31 @@ public class VectorPathTest extends TestBase {
 			@Override
 			public void testForException() throws ConstructorParamException {
 				Point2D[] failPointList = generatePointList(rand, 1);
-				new VectorPath(failPointList);
+				Point2D controlPt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
+				new VectorPath(failPointList, controlPt);
 			}	
 		}, ConstructorParamException.class);
 		
 		//Success case
 		int numPoints = 10;
 		Point2D[] successPointList = generatePointList(rand, numPoints);
-		VectorPath curve = new VectorPath(successPointList);
+		Point2D controlPt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
+		VectorPath curve = new VectorPath(successPointList, controlPt);
 		VectorPathSect[] vectorSectList = curve.getVectorList();
 		
-		Assert.assertEquals(numPoints - 1, vectorSectList.length);		
-		for (int i = 1; i < numPoints; i++) {
-			Point2D startPt = successPointList[i - 1];
-			Point2D endPt = successPointList[i];
+		Assert.assertEquals(numPoints , vectorSectList.length); // final sect loop back to beginning.
+		for (int i = 0; i < numPoints; i++) {
+			Point2D startPt;
+			Point2D endPt;
+			if (i == numPoints - 1) {
+				startPt = successPointList[i];
+				endPt = successPointList[0];
+			} else {
+				startPt = successPointList[i];
+				endPt = successPointList[i + 1];
+			}
 			
-			VectorPathSect sect = vectorSectList[i - 1];
+			VectorPathSect sect = vectorSectList[i];
 			Assert.assertEquals(startPt, sect.getStartPt());
 			Assert.assertEquals(endPt, sect.getEndPt());
 			
@@ -50,7 +59,7 @@ public class VectorPathTest extends TestBase {
 			
 			Assert.assertEquals(vecX / mag, sectVec.getX(), 0.00000001d);
 			Assert.assertEquals(vecY / mag, sectVec.getY(), 0.00000001d);		
-		}	
+		}
 	}
 	
 	private Point2D[] generatePointList(Random rand, int pointListLen) {

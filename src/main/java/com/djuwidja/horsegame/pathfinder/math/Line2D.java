@@ -173,10 +173,6 @@ public class Line2D {
 			throw Line2DException.createCannotResolveTimeOfImpactException();
 		}
 		
-		if (t < 0) {
-			throw Line2DException.createCannotResolveTimeOfImpactException();
-		}
-		
 		return t;
 	}
 	

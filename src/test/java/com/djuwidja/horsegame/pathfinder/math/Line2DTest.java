@@ -235,15 +235,6 @@ public class Line2DTest extends TestBase {
 	public void testTimeOfImpactWithLine() throws Line2DException {
 		Line2D line = new Line2D(new Point2D.Double(0d, 1d), new Point2D.Double(1d, 2d));
 		
-		//fail case - no time of impact
-		this.testExceptionThrown(new ExceptionFacilitator<Line2DException>() {
-			@Override
-			public void testForException() throws Line2DException {
-				line.getTimeOfImpact(new Point2D.Double(0d,0d), new Vector2D(1d, 0d));
-			}
-			
-		}, Line2DException.class);
-		
 		// success case
 		Double time = line.getTimeOfImpact(new Point2D.Double(0d, 0d), new Vector2D(0d, 1d));
 		Assert.assertEquals(1d, time, 0.00000001d);

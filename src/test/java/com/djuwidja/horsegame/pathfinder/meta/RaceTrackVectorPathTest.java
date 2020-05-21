@@ -22,8 +22,9 @@ public class RaceTrackVectorPathTest extends TestBase {
 		Point2D finishLinePtB = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
 		int finishLineActivation = 1 + rand.nextInt(9);
 		Point2D[] pointList = generatePointList(rand, 10);
+		Point2D controlPt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
 		Map<Integer, StartPoint> startPointMap = generateStartPointMap(rand, 5);
-		new RaceTrackVectorPath(TerrainType.GRASS, finishLinePtA, finishLinePtB, finishLineActivation, pointList, startPointMap);
+		new RaceTrackVectorPath(TerrainType.GRASS, finishLinePtA, finishLinePtB, finishLineActivation, pointList, controlPt, startPointMap);
 		
 		// fail case - no point list
 		this.testExceptionThrown(new ExceptionFacilitator<ConstructorParamException>() {
@@ -31,7 +32,7 @@ public class RaceTrackVectorPathTest extends TestBase {
 			@Override
 			public void testForException() throws ConstructorParamException {
 				Point2D[] failPointList = generatePointList(rand, 0);
-				new RaceTrackVectorPath(TerrainType.GRASS, finishLinePtA, finishLinePtB, finishLineActivation, failPointList, startPointMap);			
+				new RaceTrackVectorPath(TerrainType.GRASS, finishLinePtA, finishLinePtB, finishLineActivation, failPointList, controlPt, startPointMap);			
 			}
 		}, ConstructorParamException.class);
 		
@@ -41,7 +42,7 @@ public class RaceTrackVectorPathTest extends TestBase {
 			@Override
 			public void testForException() throws ConstructorParamException {
 				Map<Integer, StartPoint> failStartPointMap = generateStartPointMap(rand, 0);
-				new RaceTrackVectorPath(TerrainType.GRASS, finishLinePtA, finishLinePtB, finishLineActivation, pointList, failStartPointMap);			
+				new RaceTrackVectorPath(TerrainType.GRASS, finishLinePtA, finishLinePtB, finishLineActivation, pointList, controlPt, failStartPointMap);			
 			}
 		}, ConstructorParamException.class);
 	}
@@ -55,8 +56,9 @@ public class RaceTrackVectorPathTest extends TestBase {
 		Point2D finishLinePtB = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
 		int finishLineActivation = 1 + rand.nextInt(9);
 		Point2D[] pointList = generatePointList(rand, 10);
+		Point2D controlPt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
 		Map<Integer, StartPoint> startPointMap = generateStartPointMap(rand, numPoint);
-		RaceTrackVectorPath track = new RaceTrackVectorPath(TerrainType.GRASS, finishLinePtA, finishLinePtB, finishLineActivation, pointList, startPointMap);
+		RaceTrackVectorPath track = new RaceTrackVectorPath(TerrainType.GRASS, finishLinePtA, finishLinePtB, finishLineActivation, pointList, controlPt, startPointMap);
 		
 		for (int i = 0; i < numPoint; i++) {
 			StartPoint expected = startPointMap.get(i);

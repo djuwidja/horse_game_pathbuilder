@@ -10,7 +10,7 @@ import com.djuwidja.horsegame.pathfinder.meta.path.vectorpath.ConstructorParamEx
 
 import lombok.Getter;
 
-public class RaceTrackVectorPath extends RaceTrack{
+public class RaceTrackVectorPath extends RaceTrack {
 	@Getter private VectorPathCurve path;
 	private Map<Integer, StartPoint> startPointMap;
 
@@ -19,10 +19,11 @@ public class RaceTrackVectorPath extends RaceTrack{
 			Point2D finishLinePtA, 
 			Point2D finishLinePtB, 
 			int finishLineActivation, 
-			Point2D[] ptList, 
+			Point2D[] ptList,
+			Point2D controlPt,
 			Map<Integer, StartPoint> startPointMap) throws ConstructorParamException {
 		super(terrainType, finishLinePtA, finishLinePtB, finishLineActivation);
-		this.path = new VectorPathCurve(ptList);
+		this.path = new VectorPathCurve(ptList, controlPt);
 		if (startPointMap.size() == 0) {
 			throw new ConstructorParamException("Start Point Map is empty.");
 		}		
@@ -39,7 +40,7 @@ public class RaceTrackVectorPath extends RaceTrack{
 	}
 	
 	@Override
-	public Vector2D getGuidingVector(Point2D position, Vector2D normal) throws TrackSectionCurveException {
-		return path.getTangentVector(position, normal);
+	public Vector2D getGuidingVector(Point2D position) throws TrackSectionCurveException {
+		return path.getTangentVector(position);
 	}
 }

@@ -61,8 +61,7 @@ public class RaceDataWriterTest {
 		Assert.assertTrue(file.exists() && !file.isDirectory());
 	}
 
-	private RaceData createRaceData()
-			throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException {
+	private RaceData createRaceData() throws ResourceNotFoundException, ConstructorParamException, InvalidLaneIdException {
 		int numRaceHorses = 12;
 		int startPointSetId = 1;
 		int trackId = createStraightLineTrack(startPointSetId);	
@@ -82,7 +81,7 @@ public class RaceDataWriterTest {
 		trackVectorRepo.deleteAll();
 		
 		//create a straight line track from 0.0d to 125.0d with finishing lines at x = 120;
-		RaceTrackDao raceTrackDao = raceTrackRepo.save(RaceTrackDao.create(1, 1, 120d, -10.0d, 120d, 10.0d, 1));
+		RaceTrackDao raceTrackDao = raceTrackRepo.save(RaceTrackDao.create(1, 1, 120d, -10.0d, 120d, 10.0d, 60.0d, -60d, 1));
 		int trackId = raceTrackDao.getId();
 		trackVectorRepo.save(TrackVectorDao.create(trackId, 0.0d, 0.0d, 1));
 		trackVectorRepo.save(TrackVectorDao.create(trackId, 125.0d, 0.0d, 2));

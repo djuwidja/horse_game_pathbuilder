@@ -26,7 +26,7 @@ public class RaceTrackRepositoryTest {
 	public void setup() {
 		raceTrackRepo.deleteAll();
 		
-		RaceTrackDao newTrack = RaceTrackDao.create(20, 88, 0.841d, 1.566d, 0.442d, 3.806d, 1);
+		RaceTrackDao newTrack = RaceTrackDao.create(20, 88, 0.841d, 1.566d, 0.442d, 3.806d, 0d, 0d, 1);
 		raceTrackRepo.save(newTrack);
 	}
 	

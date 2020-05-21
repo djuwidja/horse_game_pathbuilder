@@ -19,7 +19,6 @@ public class RaceHorseAI implements AI {
 	@Getter private RaceTrack raceTrack;
 	@Getter Point2D position;
 	@Getter Vector2D moveVec;
-	@Getter Vector2D moveNor;
 	@Getter boolean isFinished;
 	@Getter private List<RaceHorsePathData> positionDataList;
 	@Getter private double raceTime;
@@ -40,7 +39,6 @@ public class RaceHorseAI implements AI {
 		this.raceTrack = raceTrack;
 		this.position = startPoint.getStartPos();
 		this.moveVec = startPoint.getStartVec();
-		this.moveNor = moveVec.normal();
 		
 		this.state = HorseAIState.MAINTAIN_SPEED;
 		this.normalFwdSpd = raceHorse.getFwdSpdMax();
@@ -59,6 +57,8 @@ public class RaceHorseAI implements AI {
 
 	@Override
 	public void update(double timeDelta) {
+		FinishLineActivationResult timeOfActivationBefore = null;
+		FinishLineActivationResult timeOfActivationAfter = null;
 		if (!this.isFinished) {
 			this.raceTime += timeDelta;
 			
@@ -72,10 +72,29 @@ public class RaceHorseAI implements AI {
 				break;
 			}
 			updateMoveVecWithSpd(timeDelta);
-			checkIsFinished(timeDelta);
+			timeOfActivationBefore = getTimeOfImpactBefore();
 		}	
 		updatePosition(this.moveVecWithSpd);
+		timeOfActivationAfter = getTimeOfImpactAfter();
+		
+		if (!this.isFinished) {
+			computeIsFinished(timeDelta, timeOfActivationBefore, timeOfActivationAfter);	
+		}	
 		recordPositionData();
+	}
+
+	private void computeIsFinished(double timeDelta, FinishLineActivationResult timeOfActivationBefore, FinishLineActivationResult timeOfActivationAfter) {
+		if (timeOfActivationBefore.isSuccess() && timeOfActivationAfter.isSuccess()) {
+			if (timeOfActivationBefore.getTimeOfImpact() >= 0f && timeOfActivationBefore.getTimeOfImpact() <= timeDelta) {
+				curFinishLineActivation++;
+			} else if (timeOfActivationBefore.getTimeOfImpact() >= 0f && timeOfActivationAfter.getTimeOfImpact() < 0f) {
+				curFinishLineActivation++;
+			}
+			
+			if (curFinishLineActivation >= this.raceTrack.getFinishLineActivation()) {
+				this.isFinished = true;
+			}
+		}
 	}
 	
 	private void computeInFrameVar(double timeDelta) {
@@ -88,19 +107,23 @@ public class RaceHorseAI implements AI {
 		this.moveVecWithSpd.scalar(this.curSpd * timeDelta);
 	}
 	
-	private void checkIsFinished(double timeDelta) {
+	private FinishLineActivationResult getTimeOfImpactBefore() {
 		try {
 			double timeOfImpact = raceTrack.getFinishLine().getTimeOfImpact(this.getPosition(), this.moveVecWithSpd);
-			if (timeOfImpact <= timeDelta) {
-				curFinishLineActivation++;
-			}
-			
-			if (curFinishLineActivation >= this.raceTrack.getFinishLineActivation()) {
-				this.isFinished = true;
-			}
+			return new FinishLineActivationResult(true, timeOfImpact);
 		}
 		catch (final Line2DException e) {
-			
+			return new FinishLineActivationResult(false, 0f);
+		}
+	}
+	
+	private FinishLineActivationResult getTimeOfImpactAfter() {
+		try {
+			double timeOfImpact = raceTrack.getFinishLine().getTimeOfImpact(this.getPosition(), this.moveVec);
+			return new FinishLineActivationResult(true, timeOfImpact);
+		}
+		catch (final Line2DException e) {
+			return new FinishLineActivationResult(false, 0f);
 		}
 	}
 		
@@ -116,7 +139,7 @@ public class RaceHorseAI implements AI {
 	
 	private void computeMaintainSpeed(double timeDelta) {
 		try {
-			this.moveVec = raceTrack.getGuidingVector(this.position, this.moveNor);
+			this.moveVec = raceTrack.getGuidingVector(this.position);
 			double normalSpd = 0d;
 			double acc = 0d;
 			if (Math.abs(moveVec.getX()) >= 0.80d) {

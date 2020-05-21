@@ -17,6 +17,8 @@ public class RaceTrackDao {
 			double finishLinePt1Z, 
 			double finishLinePt2X, 
 			double finishLinePt2Z,
+			double controlPtX,
+			double controlPtZ,
 			int finishLineActivation) {
 		RaceTrackDao dao = new RaceTrackDao();
 		dao.terrainType = terrainType;
@@ -25,6 +27,8 @@ public class RaceTrackDao {
 		dao.finishLinePt1Z = finishLinePt1Z;
 		dao.finishLinePt2X = finishLinePt2X;
 		dao.finishLinePt2Z = finishLinePt2Z;
+		dao.controlPtX = controlPtX;
+		dao.controlPtZ = controlPtZ;
 		dao.finishLineActivation = finishLineActivation;
 		
 		return dao;
@@ -56,6 +60,14 @@ public class RaceTrackDao {
 	@Getter
 	@Column(name="finish_line_pt2_z")
 	private Double finishLinePt2Z;
+	
+	@Getter
+	@Column(name="control_pt_x")
+	private Double controlPtX;
+	
+	@Getter
+	@Column(name="control_pt_z")
+	private Double controlPtZ;
 	
 	@Getter
 	private int finishLineActivation;

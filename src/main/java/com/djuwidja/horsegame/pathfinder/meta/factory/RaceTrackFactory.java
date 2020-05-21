@@ -22,13 +22,14 @@ public class RaceTrackFactory {
 		
 		Point2D finishLinePtA = new Point2D.Double(raceTrackDao.getFinishLinePt1X(), raceTrackDao.getFinishLinePt1Z());
 		Point2D finishLinePtB = new Point2D.Double(raceTrackDao.getFinishLinePt2X(), raceTrackDao.getFinishLinePt2Z());
+		Point2D controlPt = new Point2D.Double(raceTrackDao.getControlPtX(), raceTrackDao.getControlPtZ());
 		
 		int finishLineActivation = raceTrackDao.getFinishLineActivation();
 		
 		Point2D[] ptList = VectorPathPointListFactory.createPtListFromDao(trackVectorDaoList);
 		Map<Integer, StartPoint> startPointMap = StartPointMapFactory.createStartPointMapFromDao(startPointDaoList);
 		
-		return new RaceTrackVectorPath(terrainType, finishLinePtA, finishLinePtB, finishLineActivation, ptList, startPointMap);
+		return new RaceTrackVectorPath(terrainType, finishLinePtA, finishLinePtB, finishLineActivation, ptList, controlPt, startPointMap);
 	}
 	
 	private static TerrainType getTerrainType(int id) throws ConstructorParamException {

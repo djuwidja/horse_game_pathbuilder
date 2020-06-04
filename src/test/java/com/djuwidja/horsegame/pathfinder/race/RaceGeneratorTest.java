@@ -77,7 +77,7 @@ public class RaceGeneratorTest {
 			InvalidLaneIdException, IOException, CompressionUtilsException {
 		int trackId = createModelledTrack();
 
-		int numHorses = 12;
+		int numHorses = 1;
 		int startPointSetId = 1;
 		Map<Integer, RaceHorse> raceHorseMap = new HashMap<>();
 		List<Integer> expectedRankList = new ArrayList<>();

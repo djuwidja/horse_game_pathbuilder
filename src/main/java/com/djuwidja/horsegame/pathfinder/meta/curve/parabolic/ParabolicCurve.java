@@ -55,6 +55,11 @@ public class ParabolicCurve implements TrackSectionCurve {
 		return vec;
 	}
 	
+	@Override
+	public double getTimeOfImpact(Point2D pt, Vector2D vec) {
+		return model.getTimeOfImpact(pt, vec);
+	}
+	
 	private double getXFromLine(double y, double m, double c) {
 		return m*y + c;
 	}

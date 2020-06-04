@@ -10,6 +10,8 @@ import com.djuwidja.horsegame.pathfinder.meta.path.vectorpath.ConstructorParamEx
 import com.djuwidja.horsegame.pathfinder.meta.path.vectorpath.VectorPath;
 import com.djuwidja.horsegame.pathfinder.meta.path.vectorpath.VectorPathSect;
 
+import lombok.Getter;
+
 public class VectorPathCurve implements TrackSectionCurve {
 	private VectorPath path;
 
@@ -22,6 +24,16 @@ public class VectorPathCurve implements TrackSectionCurve {
 		Vector2D controlVec = new Vector2D(path.getControlPt().getX() - pt.getX(), path.getControlPt().getY() - pt.getY());
 		controlVec.normalize();
 		
+		IntersectionResult result = getIntersection(pt, controlVec);
+		return result.closestSect.getVector();
+	}
+	
+	public double getTimeOfImpact(Point2D pt, Vector2D vec) throws TrackSectionCurveException {
+		IntersectionResult result = getIntersection(pt, vec);
+		return result.timeOfImpact;
+	}
+	
+	private IntersectionResult getIntersection(Point2D pt, Vector2D vec) throws TrackSectionCurveException {
 		double closestTime = Double.MAX_VALUE;
 		VectorPathSect closestSect = null;
 
@@ -29,8 +41,8 @@ public class VectorPathCurve implements TrackSectionCurve {
 		for (int i = 0; i < sectList.length; i++) {
 			VectorPathSect sect = sectList[i];
 			try {
-				double timeOfImpact = sect.getLine().getTimeOfImpact(pt, controlVec);
-				Point2D intersectPoint = new Point2D.Double(pt.getX() + controlVec.getX() * timeOfImpact, pt.getY() + controlVec.getY() * timeOfImpact);
+				double timeOfImpact = sect.getLine().getTimeOfImpact(pt, vec);
+				Point2D intersectPoint = new Point2D.Double(pt.getX() + vec.getX() * timeOfImpact, pt.getY() + vec.getY() * timeOfImpact);
 				if (sect.isPointWithinBound(intersectPoint)) {
 					double absTimeOfImpact = Math.abs(timeOfImpact);
 					if (absTimeOfImpact < closestTime) {
@@ -46,7 +58,19 @@ public class VectorPathCurve implements TrackSectionCurve {
 		if (closestSect == null) {
 			throw new TrackSectionCurveException("Point does not intersect with this path.");
 		} else {
-			return closestSect.getVector();
+			return new IntersectionResult(closestTime, closestSect);
 		}
 	}
+}
+
+class IntersectionResult
+{
+	@Getter double timeOfImpact;
+	@Getter VectorPathSect closestSect;
+	
+	public IntersectionResult(double timeOfImpact, VectorPathSect closestSect) {
+		this.timeOfImpact = timeOfImpact;
+		this.closestSect = closestSect;
+	}
+	
 }

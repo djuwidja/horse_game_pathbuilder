@@ -14,11 +14,12 @@ import com.djuwidja.horsegame.pathfinder.race.data.RaceHorsePathData;
 
 import lombok.Getter;
 
-public class RaceHorseAI implements AI {
+public class RaceHorseAI implements AI {	
 	@Getter private RaceHorse raceHorse;
 	@Getter private RaceTrack raceTrack;
 	@Getter Point2D position;
 	@Getter Vector2D moveVec;
+	@Getter Vector2D normalVec;
 	@Getter boolean isFinished;
 	@Getter private List<RaceHorsePathData> positionDataList;
 	@Getter private double raceTime;
@@ -39,6 +40,8 @@ public class RaceHorseAI implements AI {
 		this.raceTrack = raceTrack;
 		this.position = startPoint.getStartPos();
 		this.moveVec = startPoint.getStartVec();
+		this.moveVec.normalize();
+		this.normalVec = moveVec.normal();
 		
 		this.state = HorseAIState.MAINTAIN_SPEED;
 		this.normalFwdSpd = raceHorse.getFwdSpdMax();
@@ -140,6 +143,8 @@ public class RaceHorseAI implements AI {
 	private void computeMaintainSpeed(double timeDelta) {
 		try {
 			this.moveVec = raceTrack.getGuidingVector(this.position);
+			this.normalVec = this.moveVec.normal();
+			
 			double normalSpd = 0d;
 			double acc = 0d;
 			if (Math.abs(moveVec.getX()) >= 0.80d) {

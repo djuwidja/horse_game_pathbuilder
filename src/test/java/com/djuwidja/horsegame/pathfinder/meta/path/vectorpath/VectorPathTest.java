@@ -22,16 +22,16 @@ public class VectorPathTest extends TestBase {
 			@Override
 			public void testForException() throws ConstructorParamException {
 				Point2D[] failPointList = generatePointList(rand, 1);
-				Point2D controlPt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
-				new VectorPath(failPointList, controlPt);
+//				Point2D controlPt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
+				new VectorPath(failPointList);
 			}	
 		}, ConstructorParamException.class);
 		
 		//Success case
 		int numPoints = 10;
 		Point2D[] successPointList = generatePointList(rand, numPoints);
-		Point2D controlPt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
-		VectorPath curve = new VectorPath(successPointList, controlPt);
+//		Point2D controlPt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
+		VectorPath curve = new VectorPath(successPointList);
 		VectorPathSect[] vectorSectList = curve.getVectorList();
 		
 		Assert.assertEquals(numPoints , vectorSectList.length); // final sect loop back to beginning.

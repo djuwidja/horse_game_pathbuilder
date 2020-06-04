@@ -23,7 +23,7 @@ public class RaceTrackVectorPath extends RaceTrack {
 			Point2D controlPt,
 			Map<Integer, StartPoint> startPointMap) throws ConstructorParamException {
 		super(terrainType, finishLinePtA, finishLinePtB, finishLineActivation);
-		this.path = new VectorPathCurve(ptList, controlPt);
+		this.path = new VectorPathCurve(ptList);
 		if (startPointMap.size() == 0) {
 			throw new ConstructorParamException("Start Point Map is empty.");
 		}		
@@ -40,7 +40,7 @@ public class RaceTrackVectorPath extends RaceTrack {
 	}
 	
 	@Override
-	public Vector2D getGuidingVector(Point2D position) throws TrackSectionCurveException {
-		return path.getTangentVector(position);
+	public Vector2D getGuidingVector(Point2D position, Vector2D normal) throws TrackSectionCurveException {
+		return path.getTangentVector(position, normal);
 	}
 }

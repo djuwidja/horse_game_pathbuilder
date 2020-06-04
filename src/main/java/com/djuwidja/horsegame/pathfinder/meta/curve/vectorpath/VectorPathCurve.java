@@ -15,16 +15,13 @@ import lombok.Getter;
 public class VectorPathCurve implements TrackSectionCurve {
 	private VectorPath path;
 
-	public VectorPathCurve(Point2D[] pointList, Point2D controlPt) throws ConstructorParamException {
-		this.path = new VectorPath(pointList, controlPt);
+	public VectorPathCurve(Point2D[] pointList) throws ConstructorParamException {
+		this.path = new VectorPath(pointList);
 	}
 
 	@Override
-	public Vector2D getTangentVector(Point2D pt) throws TrackSectionCurveException {
-		Vector2D controlVec = new Vector2D(path.getControlPt().getX() - pt.getX(), path.getControlPt().getY() - pt.getY());
-		controlVec.normalize();
-		
-		IntersectionResult result = getIntersection(pt, controlVec);
+	public Vector2D getTangentVector(Point2D pt, Vector2D normal) throws TrackSectionCurveException {		
+		IntersectionResult result = getIntersection(pt, normal);
 		return result.closestSect.getVector();
 	}
 	

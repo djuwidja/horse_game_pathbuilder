@@ -142,7 +142,7 @@ public class RaceHorseAI implements AI {
 	
 	private void computeMaintainSpeed(double timeDelta) {
 		try {
-			this.moveVec = raceTrack.getGuidingVector(this.position);
+			this.moveVec = raceTrack.getGuidingVector(this.position, this.normalVec);
 			this.normalVec = this.moveVec.normal();
 			
 			double normalSpd = 0d;

@@ -27,12 +27,9 @@ public class ParabolicCurve implements TrackSectionCurve {
 	}
 	
 	@Override
-	public Vector2D getTangentVector(Point2D pt) {
-		Vector2D controlVec = new Vector2D(controlPt.getX() - pt.getX(), controlPt.getY() - pt.getY());
-		controlVec.normalize();
-		
-		double t = model.getTimeOfImpact(pt, controlVec);	
-		Point2D intersectPt = new Point2D.Double(pt.getX() + t * controlVec.getX(), pt.getY() + t * controlVec.getY());
+	public Vector2D getTangentVector(Point2D pt, Vector2D normal) {		
+		double t = model.getTimeOfImpact(pt, normal);	
+		Point2D intersectPt = new Point2D.Double(pt.getX() + t * normal.getX(), pt.getY() + t * normal.getY());
 		double slope = model.getTangentSlope(intersectPt.getY());
 		// point is at vertex when slope == 0
 		if (slope == 0d) {

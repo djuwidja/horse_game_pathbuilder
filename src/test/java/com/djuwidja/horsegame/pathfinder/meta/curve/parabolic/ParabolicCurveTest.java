@@ -40,12 +40,15 @@ public class ParabolicCurveTest {
 		Point2D endPt = new Point2D.Double(0d, -1d);
 		Point2D vertex = new Point2D.Double(-1d, 0d);
 		Point2D control = new Point2D.Double(0d, 0d);
-		
+				
 		ParabolicCurve section = new ParabolicCurve(startPt, endPt, vertex, control);
 		Random rand = new Random();
 		for (int i = 0; i < sampleSize; i++) {
 			Point2D pt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
-			Vector2D vec = section.getTangentVector(pt);
+			Vector2D controlVec = new Vector2D(control.getX() - pt.getX(), control.getY() - pt.getY());
+			controlVec.normalize();	
+			
+			Vector2D vec = section.getTangentVector(pt, controlVec);
 			
 			Assert.assertTrue(vec.getY() > 0);
 		}
@@ -64,7 +67,10 @@ public class ParabolicCurveTest {
 		Random rand = new Random();
 		for (int i = 0; i < sampleSize; i++) {
 			Point2D pt = new Point2D.Double(rand.nextDouble(), rand.nextDouble());
-			Vector2D vec = section.getTangentVector(pt);
+			Vector2D controlVec = new Vector2D(control.getX() - pt.getX(), control.getY() - pt.getY());
+			controlVec.normalize();	
+			
+			Vector2D vec = section.getTangentVector(pt, controlVec);
 			
 			Assert.assertTrue(vec.getY() < 0);
 		}

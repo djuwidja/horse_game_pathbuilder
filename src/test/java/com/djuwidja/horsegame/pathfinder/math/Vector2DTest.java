@@ -130,7 +130,7 @@ public class Vector2DTest {
 		Vector2D vec = new Vector2D(0d, 1d);
 		
 		Vector2D normal = vec.normal();
-		Assert.assertEquals(1d, normal.getX(), 0.0000001d);
+		Assert.assertEquals(-1d, normal.getX(), 0.0000001d);
 		Assert.assertEquals(0d, normal.getY(), 0.0000001d);
 		
 		Random rand = new Random();	

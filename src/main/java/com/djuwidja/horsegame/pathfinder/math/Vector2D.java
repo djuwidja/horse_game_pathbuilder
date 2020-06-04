@@ -82,7 +82,7 @@ public class Vector2D {
 	}
 	
 	public Vector2D normal() {
-		double halfPi = -Math.PI * 0.5d;
+		double halfPi = Math.PI * 0.5d;
 		double vecX = this.x * Math.cos(halfPi) - this.y * Math.sin(halfPi);
 		double vecY = this.x * Math.sin(halfPi) + this.y * Math.cos(halfPi);
 		return new Vector2D(vecX, vecY);

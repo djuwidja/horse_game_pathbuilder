@@ -7,6 +7,7 @@ import java.awt.geom.Point2D;
 import com.djuwidja.horsegame.pathfinder.math.Parabola2D;
 import com.djuwidja.horsegame.pathfinder.math.Vector2D;
 import com.djuwidja.horsegame.pathfinder.meta.Direction;
+import com.djuwidja.horsegame.pathfinder.meta.curve.TangentVector;
 import com.djuwidja.horsegame.pathfinder.meta.curve.TrackSectionCurve;
 
 public class ParabolicCurve implements TrackSectionCurve {
@@ -27,13 +28,13 @@ public class ParabolicCurve implements TrackSectionCurve {
 	}
 	
 	@Override
-	public Vector2D getTangentVector(Point2D pt, Vector2D normal) {		
+	public TangentVector getTangentVector(Point2D pt, Vector2D normal) {		
 		double t = model.getTimeOfImpact(pt, normal);	
 		Point2D intersectPt = new Point2D.Double(pt.getX() + t * normal.getX(), pt.getY() + t * normal.getY());
 		double slope = model.getTangentSlope(intersectPt.getY());
 		// point is at vertex when slope == 0
 		if (slope == 0d) {
-			return direction==Direction.NORTH?new Vector2D(0d,1d):new Vector2D(0d,-1d);
+			return direction==Direction.NORTH?new TangentVector(t, new Vector2D(0d,1d)):new TangentVector(t, new Vector2D(0d,-1d));
 		}
 		
 		double c = -slope * pt.getY() + pt.getX();
@@ -49,14 +50,9 @@ public class ParabolicCurve implements TrackSectionCurve {
 			vec.scalar(-1d);
 		}
 		vec.normalize();		
-		return vec;
+		return new TangentVector(t, vec);
 	}
-	
-	@Override
-	public double getTimeOfImpact(Point2D pt, Vector2D vec) {
-		return model.getTimeOfImpact(pt, vec);
-	}
-	
+		
 	private double getXFromLine(double y, double m, double c) {
 		return m*y + c;
 	}

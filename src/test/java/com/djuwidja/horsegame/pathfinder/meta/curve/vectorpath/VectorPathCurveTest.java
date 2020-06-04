@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import com.djuwidja.horsegame.pathfinder.math.Vector2D;
+import com.djuwidja.horsegame.pathfinder.meta.curve.TangentVector;
 import com.djuwidja.horsegame.pathfinder.meta.curve.TrackSectionCurveException;
 import com.djuwidja.horsegame.pathfinder.meta.path.vectorpath.ConstructorParamException;
 
@@ -62,9 +63,9 @@ public class VectorPathCurveTest {
 		Vector2D controlVec = new Vector2D(controlPt.getX() - pt.getX(), controlPt.getY() - pt.getY());
 		controlVec.normalize();		
 		
-		Vector2D vec = curve.getTangentVector(pt, controlVec);
-		Assert.assertEquals(expectedVecX, vec.getX(), 0.000000001d);
-		Assert.assertEquals(expectedVecY, vec.getY(), 0.000000001d);
+		TangentVector tangent = curve.getTangentVector(pt, controlVec);
+		Assert.assertEquals(expectedVecX, tangent.getVector().getX(), 0.000000001d);
+		Assert.assertEquals(expectedVecY, tangent.getVector().getY(), 0.000000001d);
 	}
 	
 }

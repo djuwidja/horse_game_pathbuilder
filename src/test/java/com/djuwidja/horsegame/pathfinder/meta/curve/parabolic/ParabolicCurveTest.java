@@ -8,6 +8,7 @@ import java.util.Random;
 
 import com.djuwidja.horsegame.pathfinder.math.Vector2D;
 import com.djuwidja.horsegame.pathfinder.meta.Direction;
+import com.djuwidja.horsegame.pathfinder.meta.curve.TangentVector;
 
 public class ParabolicCurveTest {
 	@Test
@@ -48,9 +49,9 @@ public class ParabolicCurveTest {
 			Vector2D controlVec = new Vector2D(control.getX() - pt.getX(), control.getY() - pt.getY());
 			controlVec.normalize();	
 			
-			Vector2D vec = section.getTangentVector(pt, controlVec);
+			TangentVector tangent = section.getTangentVector(pt, controlVec);
 			
-			Assert.assertTrue(vec.getY() > 0);
+			Assert.assertTrue(tangent.getVector().getY() > 0);
 		}
 	}
 	
@@ -70,9 +71,9 @@ public class ParabolicCurveTest {
 			Vector2D controlVec = new Vector2D(control.getX() - pt.getX(), control.getY() - pt.getY());
 			controlVec.normalize();	
 			
-			Vector2D vec = section.getTangentVector(pt, controlVec);
+			TangentVector tangent = section.getTangentVector(pt, controlVec);
 			
-			Assert.assertTrue(vec.getY() < 0);
+			Assert.assertTrue(tangent.getVector().getY() < 0);
 		}
 	}
 }

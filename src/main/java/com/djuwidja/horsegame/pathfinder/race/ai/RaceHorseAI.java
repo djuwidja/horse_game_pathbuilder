@@ -9,6 +9,7 @@ import com.djuwidja.horsegame.pathfinder.math.Vector2D;
 import com.djuwidja.horsegame.pathfinder.meta.RaceHorse;
 import com.djuwidja.horsegame.pathfinder.meta.RaceTrack;
 import com.djuwidja.horsegame.pathfinder.meta.StartPoint;
+import com.djuwidja.horsegame.pathfinder.meta.curve.TangentVector;
 import com.djuwidja.horsegame.pathfinder.meta.curve.TrackSectionCurveException;
 import com.djuwidja.horsegame.pathfinder.race.data.RaceHorsePathData;
 
@@ -30,7 +31,9 @@ public class RaceHorseAI implements AI {
 	
 	private int curFinishLineActivation;
 	private Vector2D moveVecWithSpd;
+	private Vector2D compensationVec;
 	private double curSpd;
+	private double curDistanceToEdge;
 	
 	private double inFrameNorAcc;
 	private double inFrameAngAcc;
@@ -42,6 +45,7 @@ public class RaceHorseAI implements AI {
 		this.moveVec = startPoint.getStartVec();
 		this.moveVec.normalize();
 		this.normalVec = moveVec.normal();
+		this.curDistanceToEdge = 0f;
 		
 		this.state = HorseAIState.MAINTAIN_SPEED;
 		this.normalFwdSpd = raceHorse.getFwdSpdMax();
@@ -49,6 +53,7 @@ public class RaceHorseAI implements AI {
 		this.curFinishLineActivation = 0;
 		this.isFinished = false;
 		this.moveVecWithSpd = new Vector2D();
+		this.compensationVec = new Vector2D();
 		this.positionDataList = new ArrayList<RaceHorsePathData>();
 		//capture the first frame
 		this.recordPositionData();
@@ -131,8 +136,8 @@ public class RaceHorseAI implements AI {
 	}
 		
 	private void updatePosition(Vector2D moveVecWithSpd) {				
-		this.position.setLocation(this.position.getX() + moveVecWithSpd.getX(), 
-				  this.position.getY() + moveVecWithSpd.getY());
+		this.position.setLocation(this.position.getX() + moveVecWithSpd.getX() + compensationVec.getX(), 
+				  this.position.getY() + moveVecWithSpd.getY() + compensationVec.getY());
 	}
 	
 	private void recordPositionData() {		
@@ -142,8 +147,18 @@ public class RaceHorseAI implements AI {
 	
 	private void computeMaintainSpeed(double timeDelta) {
 		try {
-			this.moveVec = raceTrack.getGuidingVector(this.position, this.normalVec);
+			TangentVector tangent = raceTrack.getGuidingVector(this.position, this.normalVec);
+			this.moveVec = tangent.getVector();
 			this.normalVec = this.moveVec.normal();
+			
+			if (curDistanceToEdge == 0f) {
+				this.curDistanceToEdge = tangent.getTimeOfImpact();
+			}
+			else 
+			{
+				double distanceToEdgeDiff = tangent.getTimeOfImpact() - this.curDistanceToEdge;
+				this.compensationVec.set(this.normalVec.getX() * distanceToEdgeDiff, this.normalVec.getY() * distanceToEdgeDiff);
+			}
 			
 			double normalSpd = 0d;
 			double acc = 0d;

@@ -4,8 +4,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.djuwidja.horsegame.pathfinder.math.Line2DException;
 import com.djuwidja.horsegame.pathfinder.math.Vector2D;
+import com.djuwidja.horsegame.pathfinder.math.physics2d.CollisionResult;
+import com.djuwidja.horsegame.pathfinder.math.physics2d.Line2DCollision;
 import com.djuwidja.horsegame.pathfinder.meta.RaceHorse;
 import com.djuwidja.horsegame.pathfinder.meta.RaceTrack;
 import com.djuwidja.horsegame.pathfinder.meta.StartPoint;
@@ -65,8 +66,6 @@ public class RaceHorseAI implements AI {
 
 	@Override
 	public void update(double timeDelta) {
-		FinishLineActivationResult timeOfActivationBefore = null;
-		FinishLineActivationResult timeOfActivationAfter = null;
 		if (!this.isFinished) {
 			this.raceTime += timeDelta;
 			
@@ -80,25 +79,16 @@ public class RaceHorseAI implements AI {
 				break;
 			}
 			updateMoveVecWithSpd(timeDelta);
-			timeOfActivationBefore = getTimeOfImpactBefore();
+			checkIsFinished(timeDelta);
 		}	
 		updatePosition(this.moveVecWithSpd);
-		timeOfActivationAfter = getTimeOfImpactAfter();
-		
-		if (!this.isFinished) {
-			computeIsFinished(timeDelta, timeOfActivationBefore, timeOfActivationAfter);	
-		}	
 		recordPositionData();
 	}
 
-	private void computeIsFinished(double timeDelta, FinishLineActivationResult timeOfActivationBefore, FinishLineActivationResult timeOfActivationAfter) {
-		if (timeOfActivationBefore.isSuccess() && timeOfActivationAfter.isSuccess()) {
-			if (timeOfActivationBefore.getTimeOfImpact() >= 0f && timeOfActivationBefore.getTimeOfImpact() <= timeDelta) {
-				curFinishLineActivation++;
-			} else if (timeOfActivationBefore.getTimeOfImpact() >= 0f && timeOfActivationAfter.getTimeOfImpact() < 0f) {
-				curFinishLineActivation++;
-			}
-			
+	private void checkIsFinished(double timeDelta) {
+		CollisionResult collisonResult = Line2DCollision.checkCollision(this.raceTrack.getFinishLine(), this.position, this.moveVec, this.curSpd, timeDelta);
+		if (collisonResult.isHasCollide()) {
+			this.curFinishLineActivation++;
 			if (curFinishLineActivation >= this.raceTrack.getFinishLineActivation()) {
 				this.isFinished = true;
 			}
@@ -113,26 +103,6 @@ public class RaceHorseAI implements AI {
 	private void updateMoveVecWithSpd(double timeDelta) {
 		this.moveVecWithSpd.set(this.moveVec.getX(), this.moveVec.getY());
 		this.moveVecWithSpd.scalar(this.curSpd * timeDelta);
-	}
-	
-	private FinishLineActivationResult getTimeOfImpactBefore() {
-		try {
-			double timeOfImpact = raceTrack.getFinishLine().getTimeOfImpact(this.getPosition(), this.moveVecWithSpd);
-			return new FinishLineActivationResult(true, timeOfImpact);
-		}
-		catch (final Line2DException e) {
-			return new FinishLineActivationResult(false, 0f);
-		}
-	}
-	
-	private FinishLineActivationResult getTimeOfImpactAfter() {
-		try {
-			double timeOfImpact = raceTrack.getFinishLine().getTimeOfImpact(this.getPosition(), this.moveVec);
-			return new FinishLineActivationResult(true, timeOfImpact);
-		}
-		catch (final Line2DException e) {
-			return new FinishLineActivationResult(false, 0f);
-		}
 	}
 		
 	private void updatePosition(Vector2D moveVecWithSpd) {				

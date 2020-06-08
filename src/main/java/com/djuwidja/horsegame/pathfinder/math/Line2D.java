@@ -5,11 +5,16 @@ import java.awt.geom.Point2D;
 import lombok.Getter;
 
 public class Line2D {
+	@Getter private Point2D pt1;
+	@Getter private Point2D pt2;
 	@Getter private double m;
 	@Getter private double c;
 	@Getter private Line2DType type;
 		
 	public Line2D(Point2D pt1, Point2D pt2) {
+		this.pt1 = pt1;
+		this.pt2 = pt2;
+		
 		double xDiff = (pt2.getX() - pt1.getX());
 		double yDiff = (pt2.getY() - pt1.getY());
 		

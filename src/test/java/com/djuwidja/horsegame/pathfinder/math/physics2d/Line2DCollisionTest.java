@@ -65,4 +65,18 @@ public class Line2DCollisionTest {
 		CollisionResult result4 = Line2DCollision.checkCollision(line, pt, vec, 10d, 1d);
 		Assert.assertFalse(result4.isHasCollide());
 	}
+	
+	@Test
+	public void testCollisionFacingLineWithBound() {
+		Line2D line = new Line2D(new Point2D.Double(0d, 10d), new Point2D.Double(0d, -10d));
+		Point2D pt = new Point2D.Double(5d, 11d);
+		Vector2D vec = new Vector2D(-1d, 0d);
+		
+		// out of bound
+		CollisionResult resultWithoutBound = Line2DCollision.checkCollision(line, pt, vec, 5d, 1d);
+		Assert.assertTrue(resultWithoutBound.isHasCollide());
+		
+		CollisionResult resultWithBound = Line2DCollision.checkCollision(line, pt, vec, 5d, 1d, true);
+		Assert.assertFalse(resultWithBound.isHasCollide());
+	}
 }

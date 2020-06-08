@@ -141,4 +141,17 @@ public class Vector2DTest {
 			Assert.assertEquals(0d, testVec.dot(testNormal), 0.0000001d);
 		}
 	}
+	
+	@Test
+	public void testClone() {
+		int sample = 100;
+		Random rand = new Random();
+		for (int i = 0; i < sample; i++) {
+			Vector2D vec = new Vector2D(rand.nextDouble(), rand.nextDouble());
+			Vector2D clone = vec.clone();
+			
+			Assert.assertEquals(vec.getX(), clone.getX(), 0.0000001d);
+			Assert.assertEquals(vec.getY(), clone.getY(), 0.0000001d);
+		}
+	}
 }

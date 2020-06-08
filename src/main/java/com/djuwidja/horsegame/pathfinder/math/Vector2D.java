@@ -88,6 +88,10 @@ public class Vector2D {
 		return new Vector2D(vecX, vecY);
 	}
 	
+	public Vector2D clone() {
+		return new Vector2D(this.x, this.y);
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("Vector2D[%f, %f]", this.x, this.y);

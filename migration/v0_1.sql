@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `horse_game` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `horse_game`;
 -- MySQL dump 10.13  Distrib 8.0.20, for Linux (x86_64)
 --
 -- Host: localhost    Database: horse_game
@@ -30,6 +32,8 @@ CREATE TABLE `race_track` (
   `finish_line_pt1_z` decimal(10,5) NOT NULL,
   `finish_line_pt2_x` decimal(10,5) NOT NULL,
   `finish_line_pt2_z` decimal(10,5) NOT NULL,
+  `control_pt_x` decimal(10,5) NOT NULL,
+  `control_pt_z` decimal(10,5) NOT NULL,
   `finish_line_activation` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -75,6 +79,60 @@ LOCK TABLES `start_point` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `track_trigger`
+--
+
+DROP TABLE IF EXISTS `track_trigger`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `track_trigger` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `track_id` int unsigned NOT NULL,
+  `type` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `track_trigger`
+--
+
+LOCK TABLES `track_trigger` WRITE;
+/*!40000 ALTER TABLE `track_trigger` DISABLE KEYS */;
+/*!40000 ALTER TABLE `track_trigger` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `track_trigger_line`
+--
+
+DROP TABLE IF EXISTS `track_trigger_line`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `track_trigger_line` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `track_trigger_id` int unsigned NOT NULL,
+  `pt1_x` decimal(10,5) NOT NULL,
+  `pt1_z` decimal(10,5) NOT NULL,
+  `pt2_x` decimal(10,5) NOT NULL,
+  `pt2_z` decimal(10,5) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `track_trigger_id_UNIQUE` (`track_trigger_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `track_trigger_line`
+--
+
+LOCK TABLES `track_trigger_line` WRITE;
+/*!40000 ALTER TABLE `track_trigger_line` DISABLE KEYS */;
+/*!40000 ALTER TABLE `track_trigger_line` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `track_vector`
 --
 
@@ -110,4 +168,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-07 10:55:47
+-- Dump completed on 2020-06-10 13:46:07
